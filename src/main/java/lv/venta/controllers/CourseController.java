@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import lv.venta.services.CourseCRUDService;
 
 @Controller
-@RequestMapping("/Course")
+@RequestMapping("/course")
 public class CourseController {
 
 	@Autowired
