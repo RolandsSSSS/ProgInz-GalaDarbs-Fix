@@ -15,6 +15,8 @@ import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -50,20 +52,24 @@ public class Thesis {
 	private long idt;
 	
 	
-	//TODO pievienopt nepieciešamās validācijas
 	@Column(name = "TitleLv")
+	@NotNull
+	@Size(min = 3, max = 20)
 	private String titleLv;
 	
-	//TODO pievienopt nepieciešamās validācijas
 	@Column(name = "TitleEn")
+	@NotNull
+	@Size(min = 3, max = 20)
 	private String titleEn;
 	
-	//TODO pievienopt nepieciešamās validācijas
 	@Column(name = "Aim")
+	@NotNull
+	@Size(min = 3, max = 20)
 	private String aim;
 		
-	//TODO pievienopt nepieciešamās validācijas
 	@Column(name = "Tasks")
+	@NotNull
+	@Size(min = 3, max = 20)
 	private String tasks;
 	
 	
@@ -95,8 +101,7 @@ public class Thesis {
 	inverseJoinColumns = @JoinColumn(name = "Ida"))
 	private Collection<AcademicPersonel> reviewers = new ArrayList<>();
 	
-	
-	//TODO līdzīgu funkciju uztaisīt Academicpersonel klasē
+
 	public void addReviewer(AcademicPersonel reviewer) {
 		if(!reviewers.contains(reviewer)) {
 			reviewers.add(reviewer);

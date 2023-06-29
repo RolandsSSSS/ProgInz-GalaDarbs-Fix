@@ -38,37 +38,39 @@ public class Course {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private long idc;
-	
+
 	@Column(name = "Title")
 	@NotNull
 	@Pattern(regexp = "[A-ZĒŪĪĻĶŠĀŽČŅ]{1}[a-zēūīļķšāžčņ\\ ]+", message = "Pirmajam burtam jābūt lielajam")
 	@Size(min = 5, max = 25)
 	private String title;
-	
+
 	@Min(value = 1)
 	@Max(value = 20)
 	@Column(name = "CreditPoints")
 	private int creditPoints;
-	
+
 	@ManyToMany(mappedBy = "debtCourses")
 	private Collection<Student> debtStudents = new ArrayList<>();
-	
-	
+
 	public Course(
 			@NotNull @Pattern(regexp = "[A-ZĒŪĪĻĶŠĀŽČŅ]{1}[a-zēūīļķšāžčņ\\ ]+", message = "Pirmajam burtam jābūt lielajam") @Size(min = 5, max = 25) String title,
 			@Min(1) @Max(20) int creditPoints) {
 		this.title = title;
 		this.creditPoints = creditPoints;
-		
+
 	}
-	
+
 	public void addStudent(Student student) {
-		if(!debtStudents.contains(student)) {
+		if (!debtStudents.contains(student)) {
 			debtStudents.add(student);
 		}
 	}
-	
-	
-	//TODO izveidot removeStudent
-	
+
+	public void removeStudent(Student student) {
+		if (debtStudents.contains(student)) {
+			debtStudents.remove(student);
+		}
+	}
+
 }
