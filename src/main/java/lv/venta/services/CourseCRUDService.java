@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import lv.venta.models.Course;
 import lv.venta.repos.ICourseRepo;
+import lv.venta.services.impl.ICourseCRUDService;
 
 @Service
 public class CourseCRUDService implements ICourseCRUDService{
