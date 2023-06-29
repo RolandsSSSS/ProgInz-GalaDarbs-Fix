@@ -9,7 +9,7 @@ import lv.venta.models.Course;
 import lv.venta.repos.ICourseRepo;
 
 @Service
-public class CourseCRUDService implements ICourseCRUDService{
+public class CourseCRUDService implements ICourseCRUDService {
 
 	@Autowired
 	private ICourseRepo courseRepo;
@@ -23,5 +23,6 @@ public class CourseCRUDService implements ICourseCRUDService{
 	public List<Course> selectAllCourses() {
 		return (List<Course>)courseRepo.findAll();
 	}
+	
 	
 }

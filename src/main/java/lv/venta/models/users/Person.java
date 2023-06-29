@@ -56,7 +56,8 @@ public class Person {
 	@OneToOne
 	@JoinColumn(name = "Idu")
 	private User user;
-
+	
+	
 
 	public Person(
 			@NotNull @Pattern(regexp = "[A-ZĒŪĪĻĶŠĀŽČŅ]{1}[a-zēūīļķšāžčņ\\ ]+", message = "Pirmajam burtam jābūt lielajam") @Size(min = 3, max = 15) String name,
