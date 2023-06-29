@@ -1,4 +1,4 @@
-package lv.venta.services;
+package lv.venta.services.impl;
 
 import java.util.List;
 
