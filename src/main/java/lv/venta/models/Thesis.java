@@ -54,17 +54,17 @@ public class Thesis {
 	
 	@Column(name = "TitleLv")
 	@NotNull
-	@Size(min = 3, max = 20)
+	@Size(min = 3, max = 25)
 	private String titleLv;
 	
 	@Column(name = "TitleEn")
 	@NotNull
-	@Size(min = 3, max = 20)
+	@Size(min = 3, max = 25)
 	private String titleEn;
 	
 	@Column(name = "Aim")
 	@NotNull
-	@Size(min = 3, max = 20)
+	@Size(min = 3, max = 50)
 	private String aim;
 		
 	@Column(name = "Tasks")
