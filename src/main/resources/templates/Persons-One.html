@@ -92,6 +92,13 @@
 					<td th:text="${person.name}"></td>
 					<td th:text="${person.surname}"></td>
 					<td th:text="${person.personcode}"></td>
+					<td>
+		<form method="POST" th:action="@{/Person/remove/{id}(id=${person.idp})}">
+			<button type="submit" class="btn btn-danger">Delete</button>
+		</form>
+			</td>
+
+					</form></td>
 						</tr>
 			</tbody>
 		</table>
