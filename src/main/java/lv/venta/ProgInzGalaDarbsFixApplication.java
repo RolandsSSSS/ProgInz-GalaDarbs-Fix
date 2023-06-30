@@ -14,9 +14,9 @@ import lv.venta.models.users.Student;
 import lv.venta.models.users.User;
 import lv.venta.repos.ICommentRepo;
 import lv.venta.repos.ICourseRepo;
+import lv.venta.repos.IPersonRepo;
 import lv.venta.repos.IThesisRepo;
 import lv.venta.repos.users.IAcademicPersonelRepo;
-import lv.venta.repos.users.IPersonRepo;
 import lv.venta.repos.users.IStudentRepo;
 import lv.venta.repos.users.IUserRepo;
 

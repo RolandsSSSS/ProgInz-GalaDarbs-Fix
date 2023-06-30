@@ -10,7 +10,7 @@ import lv.venta.repos.ICourseRepo;
 import lv.venta.services.impl.ICourseCRUDService;
 
 @Service
-public class CourseCRUDService implements ICourseCRUDService{
+public class CourseCRUDService implements ICourseCRUDService {
 
 	@Autowired
 	private ICourseRepo courseRepo;
@@ -34,5 +34,6 @@ public class CourseCRUDService implements ICourseCRUDService{
 		}
 		return null;
 	}
+	
 	
 }
