@@ -57,7 +57,7 @@
 						</a>
 						<ul class="dropdown-menu" aria-labelledby="courseDropdown">
 							<li><a class="dropdown-item" href="/course/showAll">All course</a></li>
-							<li><a class="dropdown-item" href="#">Add courses</a></li>
+							<li><a class="dropdown-item" href="/course/addNew">Add courses</a></li>
 						</ul>
 					</li>
 
@@ -86,6 +86,7 @@
 					<th>Title</th>
 					<th>Credit Points</th>
 					<th>Show By ID</th>
+					<th>Action</th>
 				</tr>
 			</thead>
 
@@ -96,6 +97,12 @@
 					<td th:text="${course.creditPoints}"></td>
 					<td>
 						<a th:href="@{/course/showAll/{id}(id=${course.idc})}" class="btn btn-primary">View Details</a>
+					</td>
+					<td>
+						<div class="btn-group">
+							<a th:href="@{/course/remove/{id}(id=${course.idc})}" class="btn btn-danger">Delete</a>
+							<a th:href="@{/course/update/{id}(id=${course.idc})}" class="btn btn-primary">Update</a>
+						</div>
 					</td>
 				</tr>
 			</tbody>
