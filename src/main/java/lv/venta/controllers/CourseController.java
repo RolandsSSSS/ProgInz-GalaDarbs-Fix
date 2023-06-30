@@ -2,11 +2,13 @@ package lv.venta.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import jakarta.validation.Valid;
 import lv.venta.models.Course;
 import lv.venta.services.CourseCRUDService;
 
@@ -52,6 +54,22 @@ public class CourseController {
 	public String updateCourseById(@PathVariable long id, Course updatedCourse, org.springframework.ui.Model course) {
 		courseService.updateCourseById(id, updatedCourse);
 		course.addAttribute("MyCourses", courseService.selectAllCourses());
+		return "redirect:/course/showAll";
+	}
+	
+	@GetMapping("/addNew")
+	public String showAddCourseForm(Course course) {
+		return "course-add-page";
+	}
+
+	@PostMapping("/addNew")
+	public String addNewCourse(@Valid Course course, BindingResult bindingResult) {
+		if (bindingResult.hasErrors()) {
+			return "course-add-page";
+		}
+		Course newCourse = new Course(course.getTitle(), course.getCreditPoints());
+		courseService.insertNewCourse(newCourse);
+
 		return "redirect:/course/showAll";
 	}
 
