@@ -26,7 +26,7 @@ public interface IPersonCRUD {
 		ArrayList<Person> retrieveAllPersonsByTitle(String title) throws Exception;
 		
 		//create (insert)
-		Person insertPersontByParams( String name,String surname, String personcode,User user) throws Exception;
+		Person insertPersontByParams(Person person) throws Exception;
 
 		Person updatePersonByParams(Long id, String name, String surname, String personcode, User user)
 				throws Exception;

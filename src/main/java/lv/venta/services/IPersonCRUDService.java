@@ -49,19 +49,17 @@ public class IPersonCRUDService implements IPersonCRUD {
     }
 
     @Override
-    public Person insertPersontByParams(String name, String surname, String personcode, User user) throws Exception {
+    public Person insertPersontByParams(Person person) throws Exception {
         for (Person temp : allProducts) {
-            if (temp.getName().equals(name) && temp.getSurname().equals(name) && temp.getPersoncode().equals(personcode)) {
-
-                Person newProduct = new Person(name, surname, personcode, user);
-                // Sketchy
-                allProducts.add(newProduct);
-                return newProduct;
+            if (temp.getName().equals(person.getName()) && temp.getSurname().equals(person.getSurname()) && temp.getPersoncode().equals(person.getPersoncode())) {
+                throw new Exception("Tada persona jau existe");
             }
         }
 
-        throw new Exception("Tada persona jau existe title");
+        personRepo.save(person);
+        return person;
     }
+
 
     @Override
     public Person updatePersonByParams(Long id, String name, String surname, String personcode, User user) throws Exception {

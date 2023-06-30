@@ -6,13 +6,17 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import jakarta.validation.Valid;
 import lv.venta.services.IPersonCRUD;
 import lv.venta.services.IPersonCRUDService;
-
+import lv.venta.models.Course;
 import lv.venta.models.users.Person;
 import lv.venta.repos.IPersonRepo;
 
@@ -56,5 +60,35 @@ public class PersonsController {
 		catch(Exception e){
 		 return "error-page";
 		}
+		
+		
+		}
 
-}}
+
+			@GetMapping("/AddPage")
+					public String AddNewPerson(Model model) {
+				
+					return "Person-Add";
+}
+			@PostMapping("/Add")
+			public String addNewPerson(@ModelAttribute("personForm") @Valid Person person, BindingResult bindingResult) {
+			    if (bindingResult.hasErrors()) {
+			        return "Person-Add";
+			    }
+			    
+			    Person temp = new Person();
+			    temp.setName(person.getName());
+			    temp.setSurname(person.getSurname());
+			    temp.setPersoncode(person.getPersoncode());
+			    
+			    try {
+			    	personCrud.insertPersontByParams(person);
+			    } catch (Exception e) {
+			 
+			    }
+
+			    return "redirect:/Person/All";
+			}
+		
+
+}
