@@ -45,6 +45,16 @@ public class PersonsController {
 	    }
 	}
 
+	@GetMapping("/remove/{id}")
+	public String deletePersonById(@PathVariable long id, Model model) throws Exception {
+		try {
+		personCrud.deletePersonById(id);
+		model.addAttribute("AllPersons", personCrud.selectAllPersons());
+		return "Persons-All";
+			
+		}
+		catch(Exception e){
+		 return "error-page";
+		}
 
-		
-}
+}}

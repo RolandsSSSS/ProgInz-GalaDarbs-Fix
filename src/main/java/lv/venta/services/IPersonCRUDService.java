@@ -80,18 +80,13 @@ public class IPersonCRUDService implements IPersonCRUD {
 
     @Override
     public void deletePersonById(Long id) throws Exception {
-        boolean isFound = false;
-        for (Person temp : allProducts) {
-            if (temp.getIdp() == id) {
-                allProducts.remove(temp);
-                isFound = true;
-                break;
-            }
-        }
-        if (!isFound) {
+        if (personRepo.existsById(id)) {
+            personRepo.deleteById(id);
+        } else {
             throw new Exception("Wrong id");
         }
     }
+
 
     @Override
     public Person retrieveOnePersonById(Long id) throws Exception {

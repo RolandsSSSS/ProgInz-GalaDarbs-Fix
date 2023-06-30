@@ -82,22 +82,18 @@
 		<table class="table table-striped">
 			<thead>
 				<tr>
-				
 					<th>Name</th>
 					<th>Surname</th>
 					<th>Person Code</th>
 				</tr>
 			</thead>
 			<tbody>
-				   <th:block th:each="person : ${AllPersons}">
-                <tr>
-               
-                    <td th:text="${person.name}"></td>
-                    <td th:text="${person.surname}"></td>
-                    <td th:text="${person.personcode}"></td>
-                    
-				
-            </tr>
+				<tr th:each="person : ${AllPersons}">
+					<td th:text="${person.name}"></td>
+					<td th:text="${person.surname}"></td>
+					<td th:text="${person.personcode}"></td>
+					<td><a th:href="@{/Person/remove/{id}}(id=${person.idp})}" class="btn btn-primary">Delete</a></td>
+				</tr>
 			</tbody>
 		</table>
 	</div>
