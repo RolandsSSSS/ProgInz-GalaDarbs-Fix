@@ -19,6 +19,7 @@ import lv.venta.repos.IThesisRepo;
 import lv.venta.repos.users.IAcademicPersonelRepo;
 import lv.venta.repos.users.IStudentRepo;
 import lv.venta.repos.users.IUserRepo;
+import lv.venta.models.users.Person;
 
 @SpringBootApplication
 public class ProgInzGalaDarbsFixApplication {
@@ -84,6 +85,11 @@ public class ProgInzGalaDarbsFixApplication {
 				personalRepo.save(ac1);
 				personalRepo.save(ac2);
 				
+				Person person1 = new Person("John", "Doe", "123456-89012", us1);
+				Person person2 = new Person("Jane", "Smith", "123456-89012", us2);
+	            personRepo.save(person1);
+	            personRepo.save(person2);
+	            
 				
 				Comment com1 = new Comment("Neprecīzs nosaukums", ac2, th1);
 				Comment com2 = new Comment("Mērķi nav atbilstoši", ac1, th1);

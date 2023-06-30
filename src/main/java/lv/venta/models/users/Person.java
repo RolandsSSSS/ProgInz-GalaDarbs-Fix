@@ -47,7 +47,7 @@ public class Person {
 	
 	@NotNull
 	//TODO apdomāt un pielietot risinājumu ārzemju studentiem un jaunajiem LV personas kodiem
-	@Size(min = 12, max = 12)
+	@Size(min = 11, max = 13)
 	@Pattern(regexp = "[0-9]{6}-[0-9]{5}", message = "Neatbilstošs personas kods")
 	@Column(name = "Personcode")
 	private String personcode;
@@ -62,7 +62,7 @@ public class Person {
 	public Person(
 			@NotNull @Pattern(regexp = "[A-ZĒŪĪĻĶŠĀŽČŅ]{1}[a-zēūīļķšāžčņ\\ ]+", message = "Pirmajam burtam jābūt lielajam") @Size(min = 3, max = 15) String name,
 			@NotNull @Size(min = 3, max = 15) @Pattern(regexp = "[A-ZĒŪĪĻĶŠĀŽČŅ]{1}[a-zēūīļķšāžčņ\\ ]+", message = "Pirmajam burtam jābūt lielajam") String surname,
-			@NotNull @Size(min = 12, max = 12) @Pattern(regexp = "[0-9]{6}-[0-9]{5}", message = "Neatbilstošs personas kods") String personcode,
+			@NotNull @Size(min = 11, max = 13) @Pattern(regexp = "[0-9]{6}-[0-9]{5}", message = "Neatbilstošs personas kods") String personcode,
 			User user) {
 		this.name = name;
 		this.surname = surname;
