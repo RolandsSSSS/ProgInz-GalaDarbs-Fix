@@ -72,5 +72,6 @@ public class CourseController {
 
 		return "redirect:/course/showAll";
 	}
+	//test
 
 }
