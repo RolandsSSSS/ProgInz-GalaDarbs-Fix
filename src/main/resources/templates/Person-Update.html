@@ -68,7 +68,7 @@
 						</a>
 						<ul class="dropdown-menu" aria-labelledby="personDropdown">
 
-										<li><a class="dropdown-item" href="/Person/All">All persons</a></li>
+									<li><a class="dropdown-item" href="/Person/All">All persons</a></li>
 							<li><a class="dropdown-item" href="/Person/AddPage">Add persons</a></li>
 						</ul>
 					</li>
@@ -79,33 +79,23 @@
 	</header>
 
 	<div class="container">
-		<h1>All Persons</h1>
-		<table class="table table-striped">
-			<thead>
-				<tr>
-					<th>Person ID</th>
-					<th>Name</th>
-					<th>Surname</th>
-					<th>Person Code</th>
-				</tr>
-			</thead>
-			<tbody>
-				   <th:block th:each="person : ${AllPersons}">
-                <tr>
-                    <td th:text="${person.idp}"></td>
-                    <td th:text="${person.name}"></td>
-                    <td th:text="${person.surname}"></td>
-                    <td th:text="${person.personcode}"></td>
-                    <td>
-					<a th:href="@{/Person/All/{id}(id=${person.idp})}" class="btn btn-primary">View Details</a>
-					<a th:href="@{/Person/update/{id}(id=${person.idp})}" class="btn btn-primary">Update</a>
-                    </td>
-
-            </tr>
-            	</td>
-			</tbody>
-		</table>
-	</div>
+		 <h2>Update Person</h2>
+    <form method="post" action="/Person/update/By/{id}">
+        <div class="mb-3">
+            <label for="name" class="form-label">Name</label>
+            <input type="text" class="form-control" id="name" name="name" person. required>
+        </div>
+        <div class="mb-3">
+            <label for="surname" class="form-label">Surname</label>
+            <input type="text" class="form-control" id="surname" name="surname" required>
+        </div>
+        <div class="mb-3">
+            <label for="personcode" class="form-label">Person Code</label>
+            <input type="text" class="form-control" id="personcode" name="personcode" required>
+        </div>
+        <button type="submit" class="btn btn-primary">Confirm</button>
+    </form>
+</div>
 
 	<footer class="mt-5 py-5" style="background-color: darkgreen; color: white;">
 		<div class="container">

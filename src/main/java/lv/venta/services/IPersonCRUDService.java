@@ -62,18 +62,15 @@ public class IPersonCRUDService implements IPersonCRUD {
 
 
     @Override
-    public Person updatePersonByParams(Long id, String name, String surname, String personcode, User user) throws Exception {
-        for (Person temp : allProducts) {
-            if (temp.getIdp() == id) {
-                temp.setName(name);
-                temp.setSurname(surname);
-                temp.setPersoncode(personcode);
-                temp.setUser(user);
-                return temp;
-            }
-        }
-
-        throw new Exception("Tada persona neexiste");
+    public Person updatePersonByParams(Long id,Person person) throws Exception {
+    	 for (Person temp : allProducts) {
+             if (temp.getName().equals(person.getName()) && temp.getSurname().equals(person.getSurname()) || temp.getPersoncode().equals(person.getPersoncode())) {
+                 throw new Exception("Tada persona jau existe");
+             }
+             
+         }
+    	 personRepo.save(person);
+         return person;
     }
 
     @Override
@@ -97,7 +94,7 @@ public class IPersonCRUDService implements IPersonCRUD {
 
     public Model selectPersonById(long id, Model model) throws Exception {
       
-            List<Person> allPersons = (List<Person>) personRepo.findAll();
+        
             Person selectedPerson = retrieveOnePersonById(id);
             model.addAttribute("AllPersons", selectedPerson);
             return model;

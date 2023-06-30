@@ -28,12 +28,13 @@ public interface IPersonCRUD {
 		//create (insert)
 		Person insertPersontByParams(Person person) throws Exception;
 
-		Person updatePersonByParams(Long id, String name, String surname, String personcode, User user)
-				throws Exception;
+		
 
 		void deletePersonById(Long id) throws Exception;
 
 		List<Person> selectAllPersons();
+
+		Person updatePersonByParams(Long id, Person person) throws Exception;
 		
 		
 	

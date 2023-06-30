@@ -44,25 +44,43 @@ public class PersonsController {
 	        model.addAttribute("AllPersons", personCrud.retrieveOnePersonById(id));
 	        return "Persons-One"; 
 	    } catch (Exception e) {
-	        // Handle the exception appropriately, e.g., show an error message
+	        
+	        return "error-page";
+	    }
+	}
+	
+	@GetMapping("/update/{id}")
+	public String UdatePerson(Model model) {
+
+	return "Person-Update";
+	}
+	@PostMapping("/update/By/{id}")
+	public String updateCourseById(@PathVariable long id, @ModelAttribute("NewPerson") @Valid Person NewPerson, BindingResult bindingResult, Model model) throws Exception {
+	    if (bindingResult.hasErrors()) {
+	        return "Person-Update";
+	    }
+	    model.addAttribute("AllPersons", personCrud.retrieveOnePersonById(id));
+
+	    personCrud.updatePersonByParams(id, NewPerson);
+
+	    model.addAttribute("AllPersons", personCrud.retrieveAllPersons());
+	    return "redirect:/Person/All";
+	}
+
+	
+	
+
+	@PostMapping("/Person/remove/{id}")
+	public String deletePersonById(@PathVariable("id") long id, Model model) throws Exception {
+	    try {
+	        personCrud.deletePersonById(id);
+	        model.addAttribute("AllPersons", personCrud.selectAllPersons());
+	        return "Persons-All";
+	    } catch (Exception e) {
 	        return "error-page";
 	    }
 	}
 
-	@GetMapping("/remove/{id}")
-	public String deletePersonById(@PathVariable long id, Model model) throws Exception {
-		try {
-		personCrud.deletePersonById(id);
-		model.addAttribute("AllPersons", personCrud.selectAllPersons());
-		return "Persons-All";
-			
-		}
-		catch(Exception e){
-		 return "error-page";
-		}
-		
-		
-		}
 
 
 			@GetMapping("/AddPage")
