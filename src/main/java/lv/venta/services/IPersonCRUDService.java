@@ -1,100 +1,97 @@
 package lv.venta.services;
 
 import java.util.ArrayList;
-
+import java.util.Arrays;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import lv.venta.models.users.Person;
 import lv.venta.models.users.User;
+import lv.venta.repos.ICourseRepo;
 import lv.venta.repos.IPersonRepo;
 
+@Service
 public class IPersonCRUDService implements IPersonCRUD {
+    User us1 = new User("123", "karina.krinkele@venta.lv");
 
+    private ArrayList<Person> allProducts = new ArrayList<>(Arrays.asList(new Person("John", "Doe", "123456789012", us1)));
 
-	@Autowired
-	private  IPersonRepo personRepo;
-	
-	ArrayList<Person> personList = (ArrayList<Person>) personRepo.findAll();
+    @Autowired
+    private IPersonRepo personRepo;
 
-	
+    public IPersonCRUDService(IPersonRepo personRepo) {
+        this.personRepo = personRepo;
+    }
 
-	@Override
-	public ArrayList<Person> retrieveAllPersons() {
-		return (ArrayList<Person>)personRepo.findAll();
-	}
+  
 
-	@Override
-	public Person retrieveOnePersonById(Long id) throws Exception {
-		if(personRepo.existsById(id))
-		{
-			return personRepo.findById(id).get();
-		}
-		else
-		{
-			throw new Exception("Wrong id");
-		}
-	}
+    @Override
+    public ArrayList<Person> retrieveAllPersons() {
+        return allProducts;
+    }
 
-	@Override
-	public ArrayList<Person> retrieveAllPersonsByTitle(String title) throws Exception {
-		if(title!=null) {
-			ArrayList<Person> allProductsWithTitle = personRepo.findByName(title);
-			return allProductsWithTitle;
-		}
-		else
-		{
-			throw new Exception("Wrong title");
-		}
-	}
+    @Override
+    public Person retrieveOnePersonById(Long id) throws Exception {
+        if (personRepo.existsById(id)) {
+            return personRepo.findById(id).get();
+        } else {
+            throw new Exception("Wrong id");
+        }
+    }
 
-	@Override
-	public Person insertPersontByParams(String name, String surname, String personcode, User user) throws Exception {
-		for (Person temp : personList) {
-			if (temp.getName().equals(name) && temp.getSurname().equals(name)
-					&& temp.getPersoncode().equals(personcode)) {
-				
-				Person newProduct = new Person(name, surname, personcode, user);
-			//Sketchy
-				personList.add(newProduct);
-				return newProduct;
-			}
-		}
-		
-		throw new Exception("Tada persona jau existe title");
-	}
-		
-	
+    @Override
+    public ArrayList<Person> retrieveAllPersonsByTitle(String title) throws Exception {
+        if (title != null) {
+            ArrayList<Person> allProductsWithTitle = personRepo.findByName(title);
+            return allProductsWithTitle;
+        } else {
+            throw new Exception("Wrong title");
+        }
+    }
 
-	@Override
-	public Person updatePersonByParams(Long id, String name, String surname, String personcode, User user) throws Exception {
-		for (Person temp : personList) {
-			if (temp.getIdp() == id) {
-				temp.setName(name);
-				temp.setSurname(surname);
-				temp.setPersoncode(personcode);
-				temp.setUser(user);
-				return temp;
-			}
-		}
-		
-		throw new Exception("Tada persona neexiste");
-	}
-	@Override
-	public void deletePersonById(Long id) throws Exception {
-		boolean isFound = false;
-		for (Person temp : personList) {
-			if (temp.getIdp() == id) {
-				personList.remove(temp);
-				isFound = true;
-				break;
-			}
-		}
-		if(!isFound)
-		{
-			throw new Exception("Wrong id");
-		}
-	}}
+    @Override
+    public Person insertPersontByParams(String name, String surname, String personcode, User user) throws Exception {
+        for (Person temp : allProducts) {
+            if (temp.getName().equals(name) && temp.getSurname().equals(name) && temp.getPersoncode().equals(personcode)) {
 
+                Person newProduct = new Person(name, surname, personcode, user);
+                // Sketchy
+                allProducts.add(newProduct);
+                return newProduct;
+            }
+        }
 
+        throw new Exception("Tada persona jau existe title");
+    }
 
+    @Override
+    public Person updatePersonByParams(Long id, String name, String surname, String personcode, User user) throws Exception {
+        for (Person temp : allProducts) {
+            if (temp.getIdp() == id) {
+                temp.setName(name);
+                temp.setSurname(surname);
+                temp.setPersoncode(personcode);
+                temp.setUser(user);
+                return temp;
+            }
+        }
+
+        throw new Exception("Tada persona neexiste");
+    }
+
+    @Override
+    public void deletePersonById(Long id) throws Exception {
+        boolean isFound = false;
+        for (Person temp : allProducts) {
+            if (temp.getIdp() == id) {
+                allProducts.remove(temp);
+                isFound = true;
+                break;
+            }
+        }
+        if (!isFound) {
+            throw new Exception("Wrong id");
+        }
+    }
+}
