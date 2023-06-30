@@ -24,5 +24,15 @@ public class CourseCRUDService implements ICourseCRUDService{
 	public List<Course> selectAllCourses() {
 		return (List<Course>)courseRepo.findAll();
 	}
+
+	@Override
+	public Course selectCourseById(long idc) {
+		for(Course course : selectAllCourses()) {
+			if(course.getIdc() == idc) {
+				return course;
+			}
+		}
+		return null;
+	}
 	
 }
