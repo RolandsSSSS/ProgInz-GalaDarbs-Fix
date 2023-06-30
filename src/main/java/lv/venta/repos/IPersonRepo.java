@@ -9,4 +9,6 @@ import lv.venta.models.users.Person;
 public interface IPersonRepo  extends CrudRepository<Person, Long>{
 
 	ArrayList<Person> findByName(String var);
+
+	
 }

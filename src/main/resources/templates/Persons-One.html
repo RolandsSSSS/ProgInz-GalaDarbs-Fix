@@ -67,8 +67,8 @@
 							Person
 						</a>
 						<ul class="dropdown-menu" aria-labelledby="personDropdown">
-							<li><a class="dropdown-item" href="/Person/All">All persons</a></li>
-							<li><a class="dropdown-item" href="/Person/Add">Add persons</a></li>
+							<li><a class="dropdown-item" href="/Persons/All">All persons</a></li>
+							<li><a class="dropdown-item" href="/Persons/Add">Add persons</a></li>
 						</ul>
 					</li>
 
@@ -82,7 +82,7 @@
 		<table class="table table-striped">
 			<thead>
 				<tr>
-					<th>Person ID</th>
+				
 					<th>Name</th>
 					<th>Surname</th>
 					<th>Person Code</th>
@@ -91,15 +91,13 @@
 			<tbody>
 				   <th:block th:each="person : ${AllPersons}">
                 <tr>
-                    <td th:text="${person.idp}"></td>
+               
                     <td th:text="${person.name}"></td>
                     <td th:text="${person.surname}"></td>
                     <td th:text="${person.personcode}"></td>
-                    <td>
-					<a th:href="@{/Person/All/{id}(id=${person.idp})}" class="btn btn-primary">View Details</a>
-                    </td>
+                    
+				
             </tr>
-            	</td>
 			</tbody>
 		</table>
 	</div>

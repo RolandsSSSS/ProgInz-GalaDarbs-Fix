@@ -1,10 +1,16 @@
 package lv.venta;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.List;
+
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 
+import jakarta.persistence.CacheRetrieveMode;
 import lv.venta.models.Comment;
 import lv.venta.models.Course;
 import lv.venta.models.Thesis;
@@ -20,6 +26,7 @@ import lv.venta.repos.users.IAcademicPersonelRepo;
 import lv.venta.repos.users.IStudentRepo;
 import lv.venta.repos.users.IUserRepo;
 import lv.venta.models.users.Person;
+import lv.venta.services.IPersonCRUDService;
 
 @SpringBootApplication
 public class ProgInzGalaDarbsFixApplication {
@@ -89,13 +96,21 @@ public class ProgInzGalaDarbsFixApplication {
 				Person person2 = new Person("Jane", "Smith", "123456-89012", us2);
 	            personRepo.save(person1);
 	            personRepo.save(person2);
+	         
+
+	            
+
+	         
+
 	            
 				
 				Comment com1 = new Comment("Neprecīzs nosaukums", ac2, th1);
 				Comment com2 = new Comment("Mērķi nav atbilstoši", ac1, th1);
 				commentRepo.save(com1);
 				commentRepo.save(com2);
+
 				
+			
 			}
 		};
 	}
