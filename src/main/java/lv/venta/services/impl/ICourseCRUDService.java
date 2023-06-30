@@ -13,4 +13,6 @@ public interface ICourseCRUDService {
 	void deleteCourseById(long idc);
 
 	void updateCourseById(long idc, Course updatedCourse);
+
+	void insertNewCourse(Course course);
 }

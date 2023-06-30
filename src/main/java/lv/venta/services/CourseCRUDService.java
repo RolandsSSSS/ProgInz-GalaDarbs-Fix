@@ -8,7 +8,6 @@ import org.springframework.stereotype.Service;
 import lv.venta.models.Course;
 import lv.venta.models.users.Student;
 import lv.venta.repos.ICourseRepo;
-import lv.venta.repos.users.IStudentRepo;
 import lv.venta.services.impl.ICourseCRUDService;
 
 @Service
@@ -57,6 +56,17 @@ public class CourseCRUDService implements ICourseCRUDService {
 			course.setCreditPoints(updatedCourse.getCreditPoints());
 			courseRepo.save(course);
 		}
+	}
+	
+	@Override
+	public void insertNewCourse(Course course) {
+		for(Course course1 : selectAllCourses()) {
+			if(course1.getTitle().equals(course.getTitle()) && course1.getCreditPoints() == (course.getCreditPoints())) {
+				return;
+			}
+		}
+		selectAllCourses().add(course);
+		courseRepo.save(course);
 	}
 
 }
