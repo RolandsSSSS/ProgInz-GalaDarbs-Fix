@@ -57,18 +57,18 @@
 						</a>
 						<ul class="dropdown-menu" aria-labelledby="courseDropdown">
 							<li><a class="dropdown-item" href="/course/showAll">All course</a></li>
+							<li><a class="dropdown-item" href="#">Add courses</a></li>
 						</ul>
-									</li>
+					</li>
+
 					<li class="nav-item dropdown">
-						<a class="nav-link dropdown-toggle" href="#" id="courseDropdown" role="button"
+						<a class="nav-link dropdown-toggle" href="#" id="personDropdown" role="button"
 							data-bs-toggle="dropdown" aria-expanded="false">
-							Persons
+							Person
 						</a>
-						<ul class="dropdown-menu" aria-labelledby="courseDropdown">
-							<li><a class="dropdown-item" href="/Persons/All">All course</a></li>
-						</ul>
-						<ul class="dropdown-menu" aria-labelledby="courseDropdown">
-							<li><a class="dropdown-item" href="/Persons/All">All course</a></li>
+						<ul class="dropdown-menu" aria-labelledby="personDropdown">
+							<li><a class="dropdown-item" href="#">All persons</a></li>
+							<li><a class="dropdown-item" href="#">Add persons</a></li>
 						</ul>
 					</li>
 
@@ -88,7 +88,7 @@
 					<th>Show By ID</th>
 				</tr>
 			</thead>
-			
+
 			<tbody>
 				<tr th:each="course : ${MyCourses}">
 					<td th:text="${course.idc}"></td>
