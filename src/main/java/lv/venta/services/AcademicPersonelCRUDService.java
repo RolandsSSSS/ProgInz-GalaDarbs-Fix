@@ -24,4 +24,14 @@ public class AcademicPersonelCRUDService implements IAcademicPersonelCRUDService
 	public List<AcademicPersonel> selectAllAcademicPersonels() {
 		return (List<AcademicPersonel>) academicPersonelRepo.findAll();
 	}
+
+	@Override
+	public AcademicPersonel selectAcademicPersonelById(long idp) {
+		for (AcademicPersonel academicPersonel : selectAllAcademicPersonels()) {
+			if (academicPersonel.getIdp() == idp) {
+				return academicPersonel;
+			}
+		}
+		return null;
+	}
 }
