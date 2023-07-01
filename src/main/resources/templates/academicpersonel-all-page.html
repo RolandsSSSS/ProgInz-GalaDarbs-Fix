@@ -99,6 +99,7 @@
 					<th>Personal Code</th>
 					<th>Degree</th>
 					<th>Show By ID</th>
+					<th>Action</th>
 				</tr>
 			</thead>
 
@@ -111,6 +112,12 @@
 					<td th:text="${academicPersonel.degree}"></td>
 					<td>
 						<a th:href="@{/academicPersonel/showAll/{id}(id=${academicPersonel.idp})}" class="btn btn-primary">View Details</a>
+					</td>
+					<td>
+						<div class="btn-group">
+							<a th:href="@{/academicPersonel/remove/{id}(id=${academicPersonel.idp})}" class="btn btn-danger">Delete</a>
+							<a th:href="@{/academicPersonel/update/{id}(id=${academicPersonel.idp})}" class="btn btn-primary">Update</a>
+						</div>
 					</td>
 				</tr>
 			</tbody>

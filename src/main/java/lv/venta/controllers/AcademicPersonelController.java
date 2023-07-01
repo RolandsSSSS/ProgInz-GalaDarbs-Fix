@@ -2,10 +2,14 @@ package lv.venta.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import jakarta.validation.Valid;
+import lv.venta.models.users.AcademicPersonel;
 import lv.venta.services.AcademicPersonelCRUDService;
 
 @Controller
@@ -25,6 +29,37 @@ public class AcademicPersonelController {
 	public String selectAcademicPersonelById(@PathVariable long id, org.springframework.ui.Model academicPersonel) {
 		academicPersonel.addAttribute("MyAcademiPersonels", academicPersonelService.selectAcademicPersonelById(id));
 		return "academicpersonel-one-page";
+	}
+	
+	@GetMapping("/remove/{id}")
+	public String deleteAcademicPersonelById(@PathVariable long id, org.springframework.ui.Model academicPersonel) {
+		academicPersonelService.deleteAcademicPersonelById(id);
+		academicPersonel.addAttribute("MyAcademiPersonels", academicPersonelService.selectAllAcademicPersonels());
+		return "redirect:/academicPersonel/showAll";
+	}
+	
+	@GetMapping("/update/{id}")
+	public String showUpdateForm(@PathVariable long id, org.springframework.ui.Model academicPersonel) {
+		AcademicPersonel temp = academicPersonelService.selectAcademicPersonelById(id);
+		if (temp != null) {
+			academicPersonel.addAttribute("updatedAcademicPersonel", temp);
+			return "academicpersonel-update-page";
+		} else {
+			academicPersonel.addAttribute("MyAcademiPersonels", academicPersonelService.selectAllAcademicPersonels());
+			return "redirect:/academicPersonel/showAll";
+		}
+	}
+
+	@PostMapping("/update/{id}")
+	public String updateAcademicPersonelById(@PathVariable long id, @Valid AcademicPersonel updatedAcademicPersonel, BindingResult bindingResult, org.springframework.ui.Model academicPersonel) {
+		 if (bindingResult.hasErrors()) {
+			 academicPersonel.addAttribute("updatedAcademicPersonel", updatedAcademicPersonel);
+			 return "academicpersonel-update-page";
+		 }
+		
+		academicPersonelService.updateAcademicPersonelById(id, updatedAcademicPersonel);
+		academicPersonel.addAttribute("MyAcademiPersonels", academicPersonelService.selectAllAcademicPersonels());
+		return "redirect:/academicPersonel/showAll";
 	}
 	
 }
