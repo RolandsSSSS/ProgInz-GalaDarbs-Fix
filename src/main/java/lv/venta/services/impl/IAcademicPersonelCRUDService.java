@@ -9,4 +9,8 @@ public interface IAcademicPersonelCRUDService {
 	List<AcademicPersonel> selectAllAcademicPersonels();
 	
 	AcademicPersonel selectAcademicPersonelById(long idp);
+	
+	void deleteAcademicPersonelById(long idp);
+	
+	void updateAcademicPersonelById(long idp, AcademicPersonel updatedAcademicPersonel);
 }
