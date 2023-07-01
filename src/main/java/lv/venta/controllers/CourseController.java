@@ -51,7 +51,12 @@ public class CourseController {
 	}
 
 	@PostMapping("/update/{id}")
-	public String updateCourseById(@PathVariable long id, Course updatedCourse, org.springframework.ui.Model course) {
+	public String updateCourseById(@PathVariable long id, @Valid Course updatedCourse, BindingResult bindingResult, org.springframework.ui.Model course) {
+		 if (bindingResult.hasErrors()) {
+			 course.addAttribute("updatedCourse", updatedCourse);
+			 return "course-update-page";
+		 }
+		
 		courseService.updateCourseById(id, updatedCourse);
 		course.addAttribute("MyCourses", courseService.selectAllCourses());
 		return "redirect:/course/showAll";
@@ -72,6 +77,5 @@ public class CourseController {
 
 		return "redirect:/course/showAll";
 	}
-	//test
 
 }
