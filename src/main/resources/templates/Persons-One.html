@@ -57,7 +57,7 @@
 						</a>
 						<ul class="dropdown-menu" aria-labelledby="courseDropdown">
 							<li><a class="dropdown-item" href="/course/showAll">All course</a></li>
-							<li><a class="dropdown-item" href="#">Add courses</a></li>
+							<li><a class="dropdown-item" href="/course/addNew">Add courses</a></li>
 						</ul>
 					</li>
 
@@ -67,7 +67,7 @@
 							Person
 						</a>
 						<ul class="dropdown-menu" aria-labelledby="personDropdown">
-									<li><a class="dropdown-item" href="/Person/All">All persons</a></li>
+							<li><a class="dropdown-item" href="/Person/All">All persons</a></li>
 							<li><a class="dropdown-item" href="/Person/AddPage">Add persons</a></li>
 						</ul>
 					</li>
@@ -93,13 +93,14 @@
 					<td th:text="${person.surname}"></td>
 					<td th:text="${person.personcode}"></td>
 					<td>
-		<form method="POST" th:action="@{/Person/remove/{id}(id=${person.idp})}">
-			<button type="submit" class="btn btn-danger">Delete</button>
-		</form>
-			</td>
+						<form method="POST" th:action="@{/Person/remove/{id}(id=${person.idp})}">
+							<button type="submit" class="btn btn-danger">Delete</button>
+						</form>
+					</td>
 
-					</form></td>
-						</tr>
+					</form>
+					</td>
+				</tr>
 			</tbody>
 		</table>
 	</div>
