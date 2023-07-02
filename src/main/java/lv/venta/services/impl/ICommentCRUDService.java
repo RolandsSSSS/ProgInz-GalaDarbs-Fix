@@ -9,4 +9,8 @@ public interface ICommentCRUDService {
 	List<Comment> selectAllComments();
 	
 	Comment selectCommentById(long idco);
+	
+	void deleteCommentById(long idco);
+	
+	void updateCommentById(long idco, Comment updatedComment);
 }

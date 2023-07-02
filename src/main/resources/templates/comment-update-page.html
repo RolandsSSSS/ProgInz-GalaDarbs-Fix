@@ -2,40 +2,14 @@
 <html>
 
 <head>
-	<title>All Comments</title>
+	<title>Update Comment</title>
 	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
 	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 	<style>
-		.content-container {
-			display: flex;
-			justify-content: center;
-			align-items: center;
-			height: 40vh;
-		}
-
 		.footer-container {
 			display: flex;
 			justify-content: flex-end;
-			padding: 5 20px;
-		}
-
-		table {
-			border-collapse: collapse;
-			width: 100%;
-		}
-
-		th,
-		td {
-			text-align: left;
-			padding: 8px;
-		}
-
-		th {
-			background-color: #f2f2f2;
-		}
-
-		tr:nth-child(even) {
-			background-color: #f2f2f2;
+			padding: 5px 20px;
 		}
 	</style>
 </head>
@@ -122,40 +96,18 @@
 	</header>
 
 	<div class="container">
-		<h1>All Comments</h1>
-		<table class="table table-striped">
-			<thead>
-				<tr>
-					<th>ID</th>
-					<th>Description</th>
-					<th>Date</th>
-					<th>Personel</th>
-					<th>Thesis</th>
-					<th>Show By ID</th>
-					<th>Action</th>
-				</tr>
-			</thead>
-			<tbody>
-				<tr th:each="comment : ${MyComments}">
-					<td th:text="${comment.idco}"></td>
-					<td th:text="${comment.description}"></td>
-					<td th:text="${#temporals.format(comment.commentDate, 'dd.MM.yyyy HH:mm:ss')}"></td>
-					<td th:text="${comment.personel.name} + ' ' + ${comment.personel.surname}"></td>
-					<td th:text="${comment.thesis.titleLv}"></td>
-					<td>
-						<a th:href="@{/comment/showAll/{id}(id=${comment.idco})}" class="btn btn-primary">View Details</a>
-					</td>
-					<td>
-						<div class="btn-group">
-							<a th:href="@{/comment/remove/{id}(id=${comment.idco})}" class="btn btn-danger">Delete</a>
-							<a th:href="@{/comment/update/{id}(id=${comment.idco})}" class="btn btn-primary">Update</a>
-						</div>
-					</td>
-				</tr>
-			</tbody>
-		</table>
-	</div>
+		<h1>Update Comment</h1>
+		<form th:action="@{/comment/update/{id}(id=${updatedComment.idco})}" th:object="${updatedComment}" method="post">
+			<div class="row">
+				<div class="col">
+					<label for="description">Description:</label>
+					<input type="text" class="form-control" id="description" th:field="*{description}" required />
+				</div>
+			</div>
 
+			<button type="submit" class="btn btn-primary">Update</button>
+		</form>
+	</div>
 
 	<footer class="mt-5 py-5" style="background-color: darkgreen; color: white;">
 		<div class="container">
@@ -167,7 +119,6 @@
 			</div>
 		</div>
 	</footer>
-
 </body>
 
 </html>

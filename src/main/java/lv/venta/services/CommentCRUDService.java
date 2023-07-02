@@ -6,16 +6,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import lv.venta.models.Comment;
-import lv.venta.models.Course;
 import lv.venta.repos.ICommentRepo;
 import lv.venta.services.impl.ICommentCRUDService;
 
 @Service
-public class CommentCRUDService implements ICommentCRUDService{
+public class CommentCRUDService implements ICommentCRUDService {
 
 	@Autowired
 	private ICommentRepo commentRepo;
-	
+
 	@Autowired
 	public CommentCRUDService(ICommentRepo commentRepo) {
 		this.commentRepo = commentRepo;
@@ -34,5 +33,22 @@ public class CommentCRUDService implements ICommentCRUDService{
 			}
 		}
 		return null;
+	}
+
+	@Override
+	public void deleteCommentById(long idco) {
+		Comment comment = selectCommentById(idco);
+		if (comment != null) {
+			commentRepo.delete(comment);
+		}
+	}
+
+	@Override
+	public void updateCommentById(long idco, Comment updatedComment) {
+		Comment comment = selectCommentById(idco);
+		if (comment != null) {
+			comment.setDescription(updatedComment.getDescription());
+			commentRepo.save(comment);
+		}
 	}
 }
