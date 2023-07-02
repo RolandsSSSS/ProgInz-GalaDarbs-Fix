@@ -50,32 +50,43 @@ public class PersonsController {
 	}
 	
 	@GetMapping("/update/{id}")
-	public String UdatePerson(Model model) {
+	public String UdatePerson(@PathVariable long id, Model model) throws Exception {
+	    // Retrieve the person object based on the given id
+	    Person person = personCrud.retrieveOnePersonById(id);
 
-	return "Person-Update";
+	    // Add the person object to the model
+	    model.addAttribute("person", person);
+
+	    return "Person-Update";
 	}
+
 	@PostMapping("/update/By/{id}")
-	public String updateCourseById(@PathVariable long id, @ModelAttribute("NewPerson") @Valid Person NewPerson, BindingResult bindingResult, Model model) throws Exception {
+	public String updatePersonById(@PathVariable long id, @ModelAttribute("person") @Valid Person updatedPerson,
+	        BindingResult bindingResult, Model model) throws Exception {
 	    if (bindingResult.hasErrors()) {
 	        return "Person-Update";
 	    }
-	    model.addAttribute("AllPersons", personCrud.retrieveOnePersonById(id));
 
-	    personCrud.updatePersonByParams(id, NewPerson);
+	    // Update the person object in the database
+	    Person existingPerson = personCrud.retrieveOnePersonById(id);
+	    existingPerson.setName(updatedPerson.getName());
+	    existingPerson.setSurname(updatedPerson.getSurname());
+	    existingPerson.setPersoncode(updatedPerson.getPersoncode());
+	    personCrud.updatePersonByParams(existingPerson);
 
-	    model.addAttribute("AllPersons", personCrud.retrieveAllPersons());
 	    return "redirect:/Person/All";
 	}
 
+
 	
 	
 
-	@PostMapping("/Person/remove/{id}")
+	@PostMapping("remove/{id}")
 	public String deletePersonById(@PathVariable("id") long id, Model model) throws Exception {
 	    try {
 	        personCrud.deletePersonById(id);
 	        model.addAttribute("AllPersons", personCrud.selectAllPersons());
-	        return "Persons-All";
+	        return "redirect:/Person/All";
 	    } catch (Exception e) {
 	        return "error-page";
 	    }
