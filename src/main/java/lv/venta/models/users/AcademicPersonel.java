@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 import jakarta.persistence.AttributeOverride;
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.ManyToMany;
@@ -30,10 +31,10 @@ public class AcademicPersonel extends Person {
 	@Column(name = "Degree")
 	private Degree degree;
 	
-	@OneToMany(mappedBy = "supervisor")
+	@OneToMany(mappedBy = "supervisor", cascade = CascadeType.REMOVE)
 	private Collection<Thesis> thesis;
 	
-	@ManyToMany(mappedBy = "reviewers")
+	@ManyToMany(mappedBy = "reviewers", cascade = CascadeType.REMOVE)
 	private Collection<Thesis> thesisForReviews = new ArrayList<>();
 	
 	public void addThesisForReviews(Thesis inputThesis) {
@@ -50,7 +51,7 @@ public class AcademicPersonel extends Person {
 		super(name, surname, personcode, user);
 		this.degree = degree;
 	}
-	@OneToMany(mappedBy = "personel")
+	@OneToMany(mappedBy = "personel", cascade = CascadeType.REMOVE)
 	private Collection<Comment> comments;
 
 	public void remove(AcademicPersonel academicPersonel) {
