@@ -6,4 +6,9 @@ import lv.venta.models.users.User;
 
 public interface IUserRepo extends CrudRepository<User, Long>{
 
+	
+
+
+
+	
 }

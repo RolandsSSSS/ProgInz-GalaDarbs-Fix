@@ -51,10 +51,10 @@ public class PersonsController {
 	
 	@GetMapping("/update/{id}")
 	public String UdatePerson(@PathVariable long id, Model model) throws Exception {
-	    // Retrieve the person object based on the given id
+	  
 	    Person person = personCrud.retrieveOnePersonById(id);
 
-	    // Add the person object to the model
+
 	    model.addAttribute("person", person);
 
 	    return "Person-Update";
@@ -67,7 +67,7 @@ public class PersonsController {
 	        return "Person-Update";
 	    }
 
-	    // Update the person object in the database
+	   
 	    Person existingPerson = personCrud.retrieveOnePersonById(id);
 	    existingPerson.setName(updatedPerson.getName());
 	    existingPerson.setSurname(updatedPerson.getSurname());
