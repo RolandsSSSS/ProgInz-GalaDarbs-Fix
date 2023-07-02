@@ -71,7 +71,7 @@
 							<li><a class="dropdown-item" href="/Person/AddPage">Add persons</a></li>
 						</ul>
 					</li>
-					
+
 					<li class="nav-item dropdown">
 						<a class="nav-link dropdown-toggle" href="#" id="academicPersonelDropdown" role="button"
 							data-bs-toggle="dropdown" aria-expanded="false">
@@ -79,7 +79,7 @@
 						</a>
 						<ul class="dropdown-menu" aria-labelledby="academicPersonelDropdown">
 							<li><a class="dropdown-item" href="/academicPersonel/showAll">All Academic Personel</a></li>
-							<li><a class="dropdown-item" href="#">Add Academic Personel</a></li>
+							<li><a class="dropdown-item" href="/academicPersonel/addNew">Add Academic Personel</a></li>
 						</ul>
 					</li>
 
@@ -111,12 +111,15 @@
 					<td th:text="${academicPersonel.personcode}"></td>
 					<td th:text="${academicPersonel.degree}"></td>
 					<td>
-						<a th:href="@{/academicPersonel/showAll/{id}(id=${academicPersonel.idp})}" class="btn btn-primary">View Details</a>
+						<a th:href="@{/academicPersonel/showAll/{id}(id=${academicPersonel.idp})}"
+							class="btn btn-primary">View Details</a>
 					</td>
 					<td>
 						<div class="btn-group">
-							<a th:href="@{/academicPersonel/remove/{id}(id=${academicPersonel.idp})}" class="btn btn-danger">Delete</a>
-							<a th:href="@{/academicPersonel/update/{id}(id=${academicPersonel.idp})}" class="btn btn-primary">Update</a>
+							<a th:href="@{/academicPersonel/remove/{id}(id=${academicPersonel.idp})}"
+								class="btn btn-danger">Delete</a>
+							<a th:href="@{/academicPersonel/update/{id}(id=${academicPersonel.idp})}"
+								class="btn btn-primary">Update</a>
 						</div>
 					</td>
 				</tr>

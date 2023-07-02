@@ -53,4 +53,12 @@ public class AcademicPersonel extends Person {
 	@OneToMany(mappedBy = "personel")
 	private Collection<Comment> comments;
 
+	public void remove(AcademicPersonel academicPersonel) {
+	    if (thesis != null) {
+	        for (Thesis thesis : thesis) {
+	            thesis.setSupervisor(null);
+	        }
+	    }
+	}
+
 }

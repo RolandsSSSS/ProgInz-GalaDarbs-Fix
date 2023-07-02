@@ -49,17 +49,10 @@ public class AcademicPersonelCRUDService implements IAcademicPersonelCRUDService
 	public void deleteAcademicPersonelById(long idp) {
 		AcademicPersonel academicPersonel = selectAcademicPersonelById(idp);
 		if (academicPersonel != null) {
-			/*
-			for (Thesis thesis : academicPersonel.getThesis()) {
-				thesisRepo.delete(thesis);
+			for(Thesis thesis : academicPersonel.getThesis()) {
+				thesis.getSupervisor().remove(academicPersonel);
 			}
-			for (Thesis thesis : academicPersonel.getThesisForReviews()) {
-				thesisRepo.delete(thesis);
-			}
-			for (Comment comment : academicPersonel.getComments()) {
-				commentRepo.delete(comment);
-			}
-			*/
+			academicPersonel.getThesis().clear();
 			academicPersonelRepo.delete(academicPersonel);
 		}
 	}
@@ -74,5 +67,18 @@ public class AcademicPersonelCRUDService implements IAcademicPersonelCRUDService
 		        academicPersonel.setDegree(updatedAcademicPersonel.getDegree());
 		        academicPersonelRepo.save(academicPersonel);
 		    }
+	}
+
+	@Override
+	public void insertNewAcademicPersonel(AcademicPersonel academicPersonel) {
+		 for (AcademicPersonel academicPersonel1 : selectAllAcademicPersonels()) {
+		        if (academicPersonel1.getName().equals(academicPersonel.getName()) && 
+		        	academicPersonel1.getSurname().equals(academicPersonel.getSurname()) &&
+		        	academicPersonel1.getPersoncode().equals(academicPersonel.getPersoncode())) {
+		            return;
+		        }
+		    }
+		 	selectAllAcademicPersonels().add(academicPersonel);
+		    academicPersonelRepo.save(academicPersonel);
 	}
 }
