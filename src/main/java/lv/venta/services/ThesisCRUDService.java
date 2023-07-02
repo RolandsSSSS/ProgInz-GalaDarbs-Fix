@@ -5,8 +5,11 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import lv.venta.models.Comment;
 import lv.venta.models.Thesis;
 import lv.venta.models.users.AcademicPersonel;
+import lv.venta.models.users.Student;
+import lv.venta.repos.ICommentRepo;
 import lv.venta.repos.IThesisRepo;
 import lv.venta.services.impl.IThesisCRUDService;
 
@@ -15,6 +18,9 @@ public class ThesisCRUDService implements IThesisCRUDService{
 
 	@Autowired
 	private IThesisRepo thesisRepo;
+	
+	@Autowired
+	private ICommentRepo commentRepo;
 	
 	@Autowired
 	public ThesisCRUDService(IThesisRepo thesisRepo) {
@@ -34,5 +40,24 @@ public class ThesisCRUDService implements IThesisCRUDService{
 			}
 		}
 		return null;
+	}
+
+	@Override
+	public void deleteThesisById(long idt) {
+		Thesis thesis = selectThesisById(idt);
+	    if (thesis != null) {
+	        for (Comment comment : thesis.getComments()) {
+	            comment.setThesis(null);
+	            commentRepo.deleteById(comment.getIdco());
+	        }
+
+	        AcademicPersonel supervisor = thesis.getSupervisor();
+	        if (supervisor != null) {
+	            supervisor.getThesis().remove(thesis);
+	        }
+
+	        thesis.getComments().clear();
+	        thesisRepo.delete(thesis);
+	    }
 	}
 }

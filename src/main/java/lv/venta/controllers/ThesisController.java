@@ -26,4 +26,11 @@ public class ThesisController {
 		thesis.addAttribute("MyThesis", thesisService.selectThesisById(id));
 		return "thesis-one-page";
 	}
+	
+	@GetMapping("/remove/{id}")
+	public String deleteThesisById(@PathVariable long id, org.springframework.ui.Model thesis) {
+		thesisService.deleteThesisById(id);
+		thesis.addAttribute("MyThesis", thesisService.selectAllThesis());
+		return "redirect:/thesis/showAll";
+	}
 }
