@@ -61,4 +61,20 @@ public class CommentController {
 		comment.addAttribute("MyComments", commentService.selectAllComments());
 		return "redirect:/comment/showAll";
 	}
+	
+	@GetMapping("/addNew")
+	public String showAddCommentForm(Comment comment) {
+		return "comment-add-page";
+	}
+
+	@PostMapping("/addNew")
+	public String addNewComment(@Valid Comment comment, BindingResult bindingResult) {
+		if (bindingResult.hasErrors()) {
+			return "comment-add-page";
+		}
+		Comment newComment = new Comment(comment.getDescription(), comment.getPersonel(), comment.getThesis());
+		commentService.insertNewComment(newComment);
+
+		return "redirect:/comment/showAll";
+	}
 }
