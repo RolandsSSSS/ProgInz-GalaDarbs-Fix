@@ -8,7 +8,6 @@ import org.springframework.stereotype.Service;
 import lv.venta.models.Comment;
 import lv.venta.models.Thesis;
 import lv.venta.models.users.AcademicPersonel;
-import lv.venta.models.users.Student;
 import lv.venta.repos.ICommentRepo;
 import lv.venta.repos.IThesisRepo;
 import lv.venta.services.impl.IThesisCRUDService;
@@ -58,6 +57,18 @@ public class ThesisCRUDService implements IThesisCRUDService{
 
 	        thesis.getComments().clear();
 	        thesisRepo.delete(thesis);
+	    }
+	}
+
+	@Override
+	public void updateThesisById(long idt, Thesis updatedThesis) {
+		Thesis thesis = selectThesisById(idt);
+	    if (thesis != null) {
+	    	thesis.setTitleLv(updatedThesis.getTitleLv());
+	        thesis.setTitleEn(updatedThesis.getTitleEn());
+	        thesis.setAim(updatedThesis.getAim());
+	        thesis.setTasks(updatedThesis.getTasks());
+	        thesis.setAccStatus(updatedThesis.getAccStatus());
 	    }
 	}
 }
