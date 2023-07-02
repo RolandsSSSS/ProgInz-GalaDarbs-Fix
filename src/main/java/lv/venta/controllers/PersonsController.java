@@ -17,7 +17,9 @@ import jakarta.validation.Valid;
 import lv.venta.services.IPersonCRUD;
 import lv.venta.services.IPersonCRUDService;
 import lv.venta.models.Course;
+import lv.venta.models.users.AcademicPersonel;
 import lv.venta.models.users.Person;
+import lv.venta.models.users.Student;
 import lv.venta.repos.IPersonRepo;
 
 @Controller
@@ -84,9 +86,19 @@ public class PersonsController {
 	@PostMapping("remove/{id}")
 	public String deletePersonById(@PathVariable("id") long id, Model model) throws Exception {
 	    try {
-	        personCrud.deletePersonById(id);
-	        model.addAttribute("AllPersons", personCrud.selectAllPersons());
-	        return "redirect:/Person/All";
+	    	 if ( personCrud.retrieveOnePersonById(id) instanceof AcademicPersonel) {
+	    		 return "redirect:/academicPersonel/remove/{id}";
+	            } 
+	    	/* 	else if (personCrud.retrieveOnePersonById(id) instanceof Student) {
+	    	 		return "redirect:/academicPersonel/remove/{id}";
+				}*/
+	    	 else {
+	            	 personCrud.deletePersonById(id);
+	     	        model.addAttribute("AllPersons", personCrud.selectAllPersons());
+	     	        return "redirect:/Person/All";
+	            }
+	           
+	        
 	    } catch (Exception e) {
 	        return "error-page";
 	    }

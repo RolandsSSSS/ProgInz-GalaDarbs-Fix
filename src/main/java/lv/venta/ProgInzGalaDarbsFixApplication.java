@@ -38,12 +38,17 @@ public class ProgInzGalaDarbsFixApplication {
 			public void run(String... args) throws Exception {
 				User us1 = new User("123", "karina.krinkele@venta.lv");//pasniedzējs
 				User us2 = new User("123", "karlis.immers@venta.lv");//pasniedzējs
+				User us5 = new User("123", "karina.krinkele@venta.lv");//pasniedzējs
+				User us6 = new User("123", "karlis.immers@venta.lv");//pasniedzējs
 				User us3 = new User("123", "janis.berzins@venta.lv");//stundents
 				User us4 = new User("123", "baiba.kalnina@venta.lv");//students
 				userRepo.save(us1);
 				userRepo.save(us2);
 				userRepo.save(us3);
 				userRepo.save(us4);
+				userRepo.save(us5);
+				userRepo.save(us6);
+				
 				
 				Course c1 = new Course("Javaa", 4);
 				Course c2 = new Course("Datastr", 2);
@@ -57,6 +62,9 @@ public class ProgInzGalaDarbsFixApplication {
 						"121212-12123", us2, Degree.mg);
 				personalRepo.save(ac1);
 				personalRepo.save(ac2);
+				
+				
+
 				
 				Student s1 = new Student("Janis", "Berzins", 
 						"211221-34567", us3, "12345678", false);
@@ -85,10 +93,13 @@ public class ProgInzGalaDarbsFixApplication {
 				personalRepo.save(ac1);
 				personalRepo.save(ac2);
 				
-				/*Person person1 = new Person("John", "Doe", "123456-89012", us1);
-				Person person2 = new Person("Jane", "Smith", "123456-89012", us2);
+				Person person1 = new Person("John", "Doe", "123456-89012", us6);
+				Person person2 = new Person("Jane", "Smith", "123456-89012", us5);
 	            personRepo.save(person1);
-	            personRepo.save(person2);*/	         
+	            personRepo.save(person2);         
+	            
+	   
+
 				
 				Comment com1 = new Comment("Neprecīzs nosaukums", ac2, th1);
 				Comment com2 = new Comment("Mērķi nav atbilstoši", ac1, th1);
