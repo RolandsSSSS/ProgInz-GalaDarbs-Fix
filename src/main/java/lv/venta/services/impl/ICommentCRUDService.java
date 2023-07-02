@@ -13,4 +13,6 @@ public interface ICommentCRUDService {
 	void deleteCommentById(long idco);
 	
 	void updateCommentById(long idco, Comment updatedComment);
+	
+	void insertNewComment(Comment comment);
 }

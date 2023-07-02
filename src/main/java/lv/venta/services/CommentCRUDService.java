@@ -51,4 +51,15 @@ public class CommentCRUDService implements ICommentCRUDService {
 			commentRepo.save(comment);
 		}
 	}
+
+	@Override
+	public void insertNewComment(Comment comment) {
+		for (Comment comment1 : selectAllComments()) {
+			if (comment1.getDescription().equals(comment.getDescription())) {
+				return;
+			}
+		}
+		selectAllComments().add(comment);
+		commentRepo.save(comment);
+	}
 }
