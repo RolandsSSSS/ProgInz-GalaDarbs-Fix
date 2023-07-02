@@ -9,4 +9,6 @@ public interface IThesisCRUDService {
 	List<Thesis> selectAllThesis();
 
 	Thesis selectThesisById(long idt);
+	
+	void deleteThesisById(long idt);
 }

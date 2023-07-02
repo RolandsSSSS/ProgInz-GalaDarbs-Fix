@@ -114,6 +114,7 @@
 					<th>Submit Date</th>
 					<th>Status</th>
 					<th>Show By ID</th>
+					<th>Action</th>
 				</tr>
 			</thead>
 
@@ -129,8 +130,13 @@
 					<td th:text="${#temporals.format(thesis.submitDateTime, 'dd.MM.yyyy HH:mm:ss')}"></td>
 					<td th:text="${thesis.accStatus}"></td>
 					<td>
-						<a th:href="@{/thesis/showAll/{id}(id=${thesis.idt})}"
-							class="btn btn-primary">View Details</a>
+						<a th:href="@{/thesis/showAll/{id}(id=${thesis.idt})}" class="btn btn-primary">View Details</a>
+					</td>
+					<td>
+						<div class="btn-group">
+							<a th:href="@{/thesis/remove/{id}(id=${thesis.idt})}" class="btn btn-danger">Delete</a>
+							<a th:href="@{/thesis/update/{id}(id=${thesis.idt})}" class="btn btn-primary">Update</a>
+						</div>
 					</td>
 				</tr>
 			</tbody>
