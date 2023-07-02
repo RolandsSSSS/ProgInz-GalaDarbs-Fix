@@ -8,4 +8,5 @@ public interface IThesisCRUDService {
 
 	List<Thesis> selectAllThesis();
 
+	Thesis selectThesisById(long idt);
 }
