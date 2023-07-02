@@ -62,7 +62,7 @@ public class IPersonCRUDService implements IPersonCRUD {
 
 
     @Override
-    public Person updatePersonByParams(Long id,Person person) throws Exception {
+    public Person updatePersonByParams(Person person) throws Exception {
     	 for (Person temp : allProducts) {
              if (temp.getName().equals(person.getName()) && temp.getSurname().equals(person.getSurname()) || temp.getPersoncode().equals(person.getPersoncode())) {
                  throw new Exception("Tada persona jau existe");

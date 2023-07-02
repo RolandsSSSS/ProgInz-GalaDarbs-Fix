@@ -34,7 +34,7 @@ public interface IPersonCRUD {
 
 		List<Person> selectAllPersons();
 
-		Person updatePersonByParams(Long id, Person person) throws Exception;
+		Person updatePersonByParams(Person person) throws Exception;
 		
 		
 	
