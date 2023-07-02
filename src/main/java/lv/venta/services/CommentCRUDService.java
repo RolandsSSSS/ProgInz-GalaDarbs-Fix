@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import lv.venta.models.Comment;
+import lv.venta.models.Course;
 import lv.venta.repos.ICommentRepo;
 import lv.venta.services.impl.ICommentCRUDService;
 
@@ -23,5 +24,15 @@ public class CommentCRUDService implements ICommentCRUDService{
 	@Override
 	public List<Comment> selectAllComments() {
 		return (List<Comment>) commentRepo.findAll();
+	}
+
+	@Override
+	public Comment selectCommentById(long idco) {
+		for (Comment comment : selectAllComments()) {
+			if (comment.getIdco() == idco) {
+				return comment;
+			}
+		}
+		return null;
 	}
 }
