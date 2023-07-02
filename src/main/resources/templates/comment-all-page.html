@@ -94,34 +94,56 @@
 						</ul>
 					</li>
 
+					<li class="nav-item dropdown">
+						<a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
+							data-bs-toggle="dropdown" aria-expanded="false">
+							Users
+						</a>
+						<ul class="dropdown-menu" aria-labelledby="userDropdown">
+							<li><a class="dropdown-item" href="/User/showAll">All Users</a></li>
+							<li><a class="dropdown-item" href="/User/addNew">Add User</a></li>
+						</ul>
+					</li>
+
+					<li class="nav-item dropdown">
+						<a class="nav-link dropdown-toggle" href="#" id="commentDropdown" role="button"
+							data-bs-toggle="dropdown" aria-expanded="false">
+							Comment
+						</a>
+						<ul class="dropdown-menu" aria-labelledby="commentDropdown">
+							<li><a class="dropdown-item" href="/comment/showAll">All Comments</a></li>
+							<li><a class="dropdown-item" href="/comment/addNew">Add Comment</a></li>
+						</ul>
+					</li>
+
 				</ul>
 			</div>
 		</nav>
 	</header>
 
 	<div class="container">
-        <h1>All Comments</h1>
-        <table class="table table-striped">
-            <thead>
-                <tr>
-                    <th>ID</th>
-                    <th>Description</th>
-                    <th>Date</th>
-                    <th>Personel</th>
-                    <th>Thesis</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr th:each="comment : ${MyComments}">
-                    <td th:text="${comment.idco}"></td>
-                    <td th:text="${comment.description}"></td>
-                    <td th:text="${#temporals.format(comment.commentDate, 'dd.MM.yyyy HH:mm:ss')}"></td>
-                    <td th:text="${comment.personel.name} + ' ' + ${comment.personel.surname}"></td>
-                    <td th:text="${comment.thesis.titleLv}"></td>
-                </tr>
-            </tbody>
-        </table>
-    </div>
+		<h1>All Comments</h1>
+		<table class="table table-striped">
+			<thead>
+				<tr>
+					<th>ID</th>
+					<th>Description</th>
+					<th>Date</th>
+					<th>Personel</th>
+					<th>Thesis</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr th:each="comment : ${MyComments}">
+					<td th:text="${comment.idco}"></td>
+					<td th:text="${comment.description}"></td>
+					<td th:text="${#temporals.format(comment.commentDate, 'dd.MM.yyyy HH:mm:ss')}"></td>
+					<td th:text="${comment.personel.name} + ' ' + ${comment.personel.surname}"></td>
+					<td th:text="${comment.thesis.titleLv}"></td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
 
 
 	<footer class="mt-5 py-5" style="background-color: darkgreen; color: white;">
