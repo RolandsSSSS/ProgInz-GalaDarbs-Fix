@@ -69,6 +69,7 @@ public class ThesisCRUDService implements IThesisCRUDService{
 	        thesis.setAim(updatedThesis.getAim());
 	        thesis.setTasks(updatedThesis.getTasks());
 	        thesis.setAccStatus(updatedThesis.getAccStatus());
+	        thesisRepo.save(thesis);
 	    }
 	}
 }

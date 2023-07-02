@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import jakarta.validation.Valid;
 import lv.venta.models.Thesis;
-import lv.venta.models.users.AcademicPersonel;
 import lv.venta.services.ThesisCRUDService;
 
 @Controller
