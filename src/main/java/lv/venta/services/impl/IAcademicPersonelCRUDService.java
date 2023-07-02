@@ -13,4 +13,6 @@ public interface IAcademicPersonelCRUDService {
 	void deleteAcademicPersonelById(long idp);
 	
 	void updateAcademicPersonelById(long idp, AcademicPersonel updatedAcademicPersonel);
+	
+	void insertNewAcademicPersonel(AcademicPersonel academicPersonel);
 }

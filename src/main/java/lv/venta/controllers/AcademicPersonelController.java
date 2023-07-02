@@ -18,26 +18,26 @@ public class AcademicPersonelController {
 
 	@Autowired
 	private AcademicPersonelCRUDService academicPersonelService;
-	
+
 	@GetMapping("/showAll")
 	public String selectAllAcademicPersonels(org.springframework.ui.Model academicPersonel) {
 		academicPersonel.addAttribute("MyAcademiPersonels", academicPersonelService.selectAllAcademicPersonels());
 		return "academicpersonel-all-page";
 	}
-	
+
 	@GetMapping("/showAll/{id}")
 	public String selectAcademicPersonelById(@PathVariable long id, org.springframework.ui.Model academicPersonel) {
 		academicPersonel.addAttribute("MyAcademiPersonels", academicPersonelService.selectAcademicPersonelById(id));
 		return "academicpersonel-one-page";
 	}
-	
+
 	@GetMapping("/remove/{id}")
 	public String deleteAcademicPersonelById(@PathVariable long id, org.springframework.ui.Model academicPersonel) {
 		academicPersonelService.deleteAcademicPersonelById(id);
 		academicPersonel.addAttribute("MyAcademiPersonels", academicPersonelService.selectAllAcademicPersonels());
 		return "redirect:/academicPersonel/showAll";
 	}
-	
+
 	@GetMapping("/update/{id}")
 	public String showUpdateForm(@PathVariable long id, org.springframework.ui.Model academicPersonel) {
 		AcademicPersonel temp = academicPersonelService.selectAcademicPersonelById(id);
@@ -51,15 +51,32 @@ public class AcademicPersonelController {
 	}
 
 	@PostMapping("/update/{id}")
-	public String updateAcademicPersonelById(@PathVariable long id, @Valid AcademicPersonel updatedAcademicPersonel, BindingResult bindingResult, org.springframework.ui.Model academicPersonel) {
-		 if (bindingResult.hasErrors()) {
-			 academicPersonel.addAttribute("updatedAcademicPersonel", updatedAcademicPersonel);
-			 return "academicpersonel-update-page";
-		 }
-		
+	public String updateAcademicPersonelById(@PathVariable long id, @Valid AcademicPersonel updatedAcademicPersonel,
+			BindingResult bindingResult, org.springframework.ui.Model academicPersonel) {
+		if (bindingResult.hasErrors()) {
+			academicPersonel.addAttribute("updatedAcademicPersonel", updatedAcademicPersonel);
+			return "academicpersonel-update-page";
+		}
+
 		academicPersonelService.updateAcademicPersonelById(id, updatedAcademicPersonel);
 		academicPersonel.addAttribute("MyAcademiPersonels", academicPersonelService.selectAllAcademicPersonels());
 		return "redirect:/academicPersonel/showAll";
 	}
-	
+
+	@GetMapping("/addNew")
+	public String showAddAcademicPersonelForm(AcademicPersonel academicPersonel) {
+		return "academicpersonel-add-page";
+	}
+
+	@PostMapping("/addNew")
+	public String addNewAcademicPersonel(@Valid AcademicPersonel academicPersonel, BindingResult bindingResult) {
+		if (bindingResult.hasErrors()) {
+			return "academicpersonel-add-page";
+		}
+		AcademicPersonel newAcademicPersonel = new AcademicPersonel(academicPersonel.getName(), academicPersonel.getSurname(), academicPersonel.getPersoncode(),academicPersonel.getUser(), academicPersonel.getDegree());
+		academicPersonelService.insertNewAcademicPersonel(newAcademicPersonel);
+
+		return "redirect:/academicPersonel/showAll";
+	}
+
 }
