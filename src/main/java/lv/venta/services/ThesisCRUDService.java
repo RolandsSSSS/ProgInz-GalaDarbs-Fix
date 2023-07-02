@@ -13,19 +13,19 @@ import lv.venta.repos.IThesisRepo;
 import lv.venta.services.impl.IThesisCRUDService;
 
 @Service
-public class ThesisCRUDService implements IThesisCRUDService{
+public class ThesisCRUDService implements IThesisCRUDService {
 
 	@Autowired
 	private IThesisRepo thesisRepo;
-	
+
 	@Autowired
 	private ICommentRepo commentRepo;
-	
+
 	@Autowired
 	public ThesisCRUDService(IThesisRepo thesisRepo) {
 		this.thesisRepo = thesisRepo;
 	}
-	
+
 	@Override
 	public List<Thesis> selectAllThesis() {
 		return (List<Thesis>) thesisRepo.findAll();
@@ -44,32 +44,50 @@ public class ThesisCRUDService implements IThesisCRUDService{
 	@Override
 	public void deleteThesisById(long idt) {
 		Thesis thesis = selectThesisById(idt);
-	    if (thesis != null) {
-	        for (Comment comment : thesis.getComments()) {
-	            comment.setThesis(null);
-	            commentRepo.deleteById(comment.getIdco());
-	        }
+		if (thesis != null) {
+			for (Comment comment : thesis.getComments()) {
+				comment.setThesis(null);
+				commentRepo.deleteById(comment.getIdco());
+			}
 
-	        AcademicPersonel supervisor = thesis.getSupervisor();
-	        if (supervisor != null) {
-	            supervisor.getThesis().remove(thesis);
-	        }
+			AcademicPersonel supervisor = thesis.getSupervisor();
+			if (supervisor != null) {
+				supervisor.getThesis().remove(thesis);
+			}
 
-	        thesis.getComments().clear();
-	        thesisRepo.delete(thesis);
-	    }
+			thesis.getComments().clear();
+			thesisRepo.delete(thesis);
+		}
 	}
 
 	@Override
 	public void updateThesisById(long idt, Thesis updatedThesis) {
 		Thesis thesis = selectThesisById(idt);
-	    if (thesis != null) {
-	    	thesis.setTitleLv(updatedThesis.getTitleLv());
-	        thesis.setTitleEn(updatedThesis.getTitleEn());
-	        thesis.setAim(updatedThesis.getAim());
-	        thesis.setTasks(updatedThesis.getTasks());
-	        thesis.setAccStatus(updatedThesis.getAccStatus());
-	        thesisRepo.save(thesis);
-	    }
+		if (thesis != null) {
+			thesis.setTitleLv(updatedThesis.getTitleLv());
+			thesis.setTitleEn(updatedThesis.getTitleEn());
+			thesis.setAim(updatedThesis.getAim());
+			thesis.setTasks(updatedThesis.getTasks());
+			thesis.setAccStatus(updatedThesis.getAccStatus());
+			thesisRepo.save(thesis);
+		}
+	}
+
+	@Override
+	public void insertNewThesis(Thesis thesis) {
+		for (Thesis thesis1 : selectAllThesis()) {
+			if (thesis1.getTitleLv().equals(thesis.getTitleLv()) && 
+					thesis1.getTitleEn().equals(thesis.getTitleEn()) && 
+					thesis1.getAim().equals(thesis.getAim()) &&
+					thesis1.getTasks().equals(thesis.getTasks()) &&
+					thesis1.getStudent().equals(thesis.getStudent()) &&
+					thesis1.getSupervisor().equals(thesis.getSupervisor()) &&
+					thesis1.getAccStatus() == thesis.getAccStatus()) {
+				return;
+			}
+		}
+		selectAllThesis().add(thesis);
+		thesisRepo.save(thesis);
+
 	}
 }
