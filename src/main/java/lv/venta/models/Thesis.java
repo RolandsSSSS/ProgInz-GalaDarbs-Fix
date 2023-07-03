@@ -4,6 +4,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collection;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -108,8 +109,9 @@ public class Thesis {
 		}
 	}
 
-	@OneToMany(mappedBy = "thesis")
+	@OneToMany(mappedBy = "thesis", cascade = CascadeType.ALL)
 	private Collection<Comment> comments;
+
 	
 
 	public Thesis(String titleLv, String titleEn, String aim, String tasks, Student student,
