@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 import jakarta.persistence.AttributeOverride;
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.JoinColumn;
@@ -26,7 +27,7 @@ import lv.venta.models.Thesis;
 @Getter
 @Setter
 @NoArgsConstructor
-@AttributeOverride(name = "Idp", column = @Column(name = "Ids"))
+@AttributeOverride(name = "Idp", column = @Column(name = "Idp"))
 public class Student extends Person{
 	
 	//TODO izveidot Data JPA anotācijas
@@ -49,7 +50,7 @@ public class Student extends Person{
 	private Collection<Course> debtCourses = new ArrayList<Course>();
 	
 	
-	@OneToMany(mappedBy = "student")
+	@OneToMany(mappedBy = "student", cascade = CascadeType.ALL, orphanRemoval = true)
 	private Collection<Thesis> thesis;
 	
 	
@@ -68,7 +69,9 @@ public class Student extends Person{
 			debtCourses.add(course);
 		}
 	}
+
 	
-	//TODO izveidot removeDebtCourse
+	
+	
 
 }

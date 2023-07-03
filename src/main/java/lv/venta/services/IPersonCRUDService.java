@@ -16,11 +16,7 @@ import lv.venta.repos.IPersonRepo;
 
 @Service
 public class IPersonCRUDService implements IPersonCRUD {
-
-    User us1 = new User("123", "karina.krinkele@venta.lv");
-
-    private ArrayList<Person> allProducts = new ArrayList<>(Arrays.asList(new Person("John", "Doe", "123456789012", us1)));
-
+ 
     @Autowired
     private IPersonRepo personRepo;
 
@@ -33,11 +29,7 @@ public class IPersonCRUDService implements IPersonCRUD {
         return (List<Person>) personRepo.findAll();
     }
 
-    @Override
-    public ArrayList<Person> retrieveAllPersons() {
-        return allProducts;
-    }
-
+  
     @Override
     public ArrayList<Person> retrieveAllPersonsByTitle(String title) throws Exception {
         if (title != null) {
@@ -50,11 +42,7 @@ public class IPersonCRUDService implements IPersonCRUD {
 
     @Override
     public Person insertPersontByParams(Person person) throws Exception {
-        for (Person temp : allProducts) {
-            if (temp.getName().equals(person.getName()) && temp.getSurname().equals(person.getSurname()) && temp.getPersoncode().equals(person.getPersoncode())) {
-                throw new Exception("Tada persona jau existe");
-            }
-        }
+      
 
         personRepo.save(person);
         return person;
@@ -63,12 +51,7 @@ public class IPersonCRUDService implements IPersonCRUD {
 
     @Override
     public Person updatePersonByParams(Person person) throws Exception {
-    	 for (Person temp : allProducts) {
-             if (temp.getName().equals(person.getName()) && temp.getSurname().equals(person.getSurname()) || temp.getPersoncode().equals(person.getPersoncode())) {
-                 throw new Exception("Tada persona jau existe");
-             }
-             
-         }
+    	
     	 personRepo.save(person);
          return person;
     }
