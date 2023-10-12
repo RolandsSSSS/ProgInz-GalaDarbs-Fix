@@ -40,7 +40,7 @@ public class ProgInzGalaDarbsFixApplication {
 				User us2 = new User("123", "karlis.immers@venta.lv");//pasniedzējs
 				User us5 = new User("123", "karina.krinkele@venta.lv");//pasniedzējs
 				User us6 = new User("123", "karlis.immers@venta.lv");//pasniedzējs
-				User us3 = new User("123", "juris.berzins@venta.lv");//stundents
+				User us3 = new User("123", "rolands.berzins@venta.lv");//stundents
 				User us4 = new User("123", "baiba.kalnina@venta.lv");//students
 				userRepo.save(us1);
 				userRepo.save(us2);
