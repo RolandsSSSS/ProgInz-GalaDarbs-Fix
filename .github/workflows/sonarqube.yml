@@ -8,7 +8,7 @@ on:
 
 jobs:
   build:
-    name: SonarQube test
+    name: SonarQube testing
     runs-on: ubuntu-latest
     permissions: read-all
     steps:
