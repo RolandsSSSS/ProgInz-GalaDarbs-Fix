@@ -35,4 +35,4 @@ jobs:
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
           SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
-        run: mvn -B verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -Dsonar.projectKey=ProgInz-GalaDarbs-Fix -Dsonar.projectName='ProgInz-GalaDarbs-Fix'
+        run: mvn clean verify sonar:sonar -Dsonar.projectKey=ProgInz-GalaDarbs-Fix -Dsonar.projectName='ProgInz-GalaDarbs-Fix' -Dsonar.host.url=http://localhost:9000 -Dsonar.token=sqp_9892eae6e18300573d3aab2fd665b0f171031bf9
