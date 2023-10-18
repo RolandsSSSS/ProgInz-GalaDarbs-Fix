@@ -1,9 +1,9 @@
-name: Sonarqube An
+name: SonarQube analysis
 
 on:
   push:
     branches:
-      - main
+      - master
 
 
 jobs:
