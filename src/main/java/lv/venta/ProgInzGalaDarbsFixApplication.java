@@ -1,5 +1,7 @@
 package lv.venta;
 
+import java.io.IOException;
+
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -8,6 +10,7 @@ import org.springframework.context.annotation.Bean;
 import lv.venta.models.Comment;
 import lv.venta.models.Course;
 import lv.venta.models.Thesis;
+import lv.venta.models.Translate;
 import lv.venta.models.users.AcademicPersonel;
 import lv.venta.models.users.Degree;
 import lv.venta.models.users.Student;
@@ -105,6 +108,17 @@ public class ProgInzGalaDarbsFixApplication {
 				Comment com2 = new Comment("Mērķi nav atbilstoši", ac1, th1);
 				commentRepo.save(com1);
 				commentRepo.save(com2);
+				
+				String langFrom = "lv";
+				String langTo = "en";
+				String textToTranslate = "Tulkošana strādā";
+				
+				try{
+					String translatedText = Translate.translate(langFrom, langTo, textToTranslate);
+					System.out.println("Tulkojums: " + translatedText);
+				}catch (IOException e){
+					System.err.println("Kļūda veicot tulkojumu: " + e.getMessage());
+				}
 
 				
 			
