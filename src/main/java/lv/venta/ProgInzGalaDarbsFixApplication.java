@@ -43,14 +43,16 @@ public class ProgInzGalaDarbsFixApplication {
 				User us2 = new User("123", "karlis.immers@venta.lv");//pasniedzējs
 				User us5 = new User("123", "karina.krinkele@venta.lv");//pasniedzējs
 				User us6 = new User("123", "karlis.immers@venta.lv");//pasniedzējs
-				User us3 = new User("123", "rolands.berzins@venta.lv");//stundents
+				User us3 = new User("123", "janis.berzins@venta.lv");//stundents
 				User us4 = new User("123", "baiba.kalnina@venta.lv");//students
+				User us7 = new User("123", "andris.ribakovs@venta.lv");//pasniedzējs
 				userRepo.save(us1);
 				userRepo.save(us2);
 				userRepo.save(us3);
 				userRepo.save(us4);
 				userRepo.save(us5);
 				userRepo.save(us6);
+				userRepo.save(us7);
 				
 				
 				Course c1 = new Course("Javaa", 4);
@@ -73,10 +75,13 @@ public class ProgInzGalaDarbsFixApplication {
 						"211221-34567", us3, "12345678", false);
 				Student s2 = new Student("Baiba", "Kalnina", 
 						"121256-98765", us4, "12899876", true);
+				Student s3 = new Student("Andris", "Ribakovs", 
+						"131256-98765", us7, "12799876", true);
 				s2.addDebtCourse(c1);
 				s2.addDebtCourse(c2);
 				studentRepo.save(s1);
 				studentRepo.save(s2);
+				studentRepo.save(s3);
 				c1.addStudent(s2);
 				c2.addStudent(s2);
 				courseRepo.save(c1);
