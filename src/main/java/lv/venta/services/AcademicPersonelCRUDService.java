@@ -17,6 +17,9 @@ import lv.venta.services.impl.IAcademicPersonelCRUDService;
 public class AcademicPersonelCRUDService implements IAcademicPersonelCRUDService {
 
 	@Autowired
+	private final SystemLogger systemLogger;
+	
+	@Autowired
 	private IAcademicPersonelRepo academicPersonelRepo;
 
 	@Autowired
@@ -26,12 +29,14 @@ public class AcademicPersonelCRUDService implements IAcademicPersonelCRUDService
 	private ICommentRepo commentRepo;
 
 	@Autowired
-	public AcademicPersonelCRUDService(IAcademicPersonelRepo academicPersonelRepo) {
+	public AcademicPersonelCRUDService(IAcademicPersonelRepo academicPersonelRepo, SystemLogger systemLogger) {
 		this.academicPersonelRepo = academicPersonelRepo;
+		this.systemLogger = systemLogger;
 	}
 
 	@Override
 	public List<AcademicPersonel> selectAllAcademicPersonels() {
+		systemLogger.logInfo("Atlasīts viss Akadēmiskais personāls.");
 		return (List<AcademicPersonel>) academicPersonelRepo.findAll();
 	}
 
@@ -39,9 +44,11 @@ public class AcademicPersonelCRUDService implements IAcademicPersonelCRUDService
 	public AcademicPersonel selectAcademicPersonelById(long idp) {
 		for (AcademicPersonel academicPersonel : selectAllAcademicPersonels()) {
 			if (academicPersonel.getIdp() == idp) {
+				systemLogger.logInfo("Atlasīts akadēmiskais personāls ar ID: " + idp);
 				return academicPersonel;
 			}
 		}
+		systemLogger.logWarning("Akadēmiskais personāls ar ID " + idp + " netika atrasts.");
 		return null;
 	}
 
@@ -49,12 +56,15 @@ public class AcademicPersonelCRUDService implements IAcademicPersonelCRUDService
 	public void deleteAcademicPersonelById(long idp) {
 		AcademicPersonel academicPersonel = selectAcademicPersonelById(idp);
 		if (academicPersonel != null) {
+			systemLogger.logInfo("Izdzēsts akadēmiskais personāls ar ID: " + idp);
 			for(Thesis thesis : academicPersonel.getThesis()) {
 				thesis.getSupervisor().remove(academicPersonel);
 			}
 			academicPersonel.getThesis().clear();
 			academicPersonelRepo.delete(academicPersonel);
-		}
+		} else {
+	        systemLogger.logWarning("Mēģināts izdzēst neesošu akadēmisko personālu ar ID " + idp);
+	    }
 	}
 
 	@Override
@@ -66,7 +76,11 @@ public class AcademicPersonelCRUDService implements IAcademicPersonelCRUDService
 		        academicPersonel.setPersoncode(updatedAcademicPersonel.getPersoncode());
 		        academicPersonel.setDegree(updatedAcademicPersonel.getDegree());
 		        academicPersonelRepo.save(academicPersonel);
-		    }
+		        
+		        systemLogger.logInfo("Akadēmiskais personāls atjaunināts ar ID: " + idp);
+		    } else {
+		        systemLogger.logWarning("Mēģināts atjaunināt neesošu akadēmisko personālu ar ID " + idp);
+			}
 	}
 
 	@Override
@@ -80,5 +94,6 @@ public class AcademicPersonelCRUDService implements IAcademicPersonelCRUDService
 		    }
 		 	selectAllAcademicPersonels().add(academicPersonel);
 		    academicPersonelRepo.save(academicPersonel);
+		    systemLogger.logInfo("Ievietots jauns akadēmiskais personāls: " + academicPersonel.getName() + " " + academicPersonel.getSurname());
 	}
 }
