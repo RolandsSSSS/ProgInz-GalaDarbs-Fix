@@ -11,17 +11,22 @@ import lv.venta.services.impl.ICommentCRUDService;
 
 @Service
 public class CommentCRUDService implements ICommentCRUDService {
+	
+	@Autowired
+	private final SystemLogger systemLogger;
 
 	@Autowired
 	private ICommentRepo commentRepo;
 
 	@Autowired
-	public CommentCRUDService(ICommentRepo commentRepo) {
+	public CommentCRUDService(ICommentRepo commentRepo, SystemLogger systemLogger) {
 		this.commentRepo = commentRepo;
+		this.systemLogger = systemLogger;
 	}
 
 	@Override
 	public List<Comment> selectAllComments() {
+		systemLogger.logInfo("Atlasīti visi komenti.");
 		return (List<Comment>) commentRepo.findAll();
 	}
 
@@ -29,9 +34,11 @@ public class CommentCRUDService implements ICommentCRUDService {
 	public Comment selectCommentById(long idco) {
 		for (Comment comment : selectAllComments()) {
 			if (comment.getIdco() == idco) {
+				systemLogger.logInfo("Atlasīts koments ar ID: " + idco);
 				return comment;
 			}
 		}
+		systemLogger.logWarning("Koments ar ID " + idco + " netika atrasts.");
 		return null;
 	}
 
@@ -39,7 +46,10 @@ public class CommentCRUDService implements ICommentCRUDService {
 	public void deleteCommentById(long idco) {
 		Comment comment = selectCommentById(idco);
 		if (comment != null) {
+			systemLogger.logInfo("Izdzēsts koments ar ID: " + idco);
 			commentRepo.delete(comment);
+		} else {
+	        systemLogger.logWarning("Mēģināts izdzēst neesošu komentu ar ID " + idco);
 		}
 	}
 
@@ -49,6 +59,10 @@ public class CommentCRUDService implements ICommentCRUDService {
 		if (comment != null) {
 			comment.setDescription(updatedComment.getDescription());
 			commentRepo.save(comment);
+			
+			systemLogger.logInfo("Koments atjaunināts ar ID: " + idco);
+		} else {
+	        systemLogger.logWarning("Mēģināts atjaunināt neesošu komentu ar ID " + idco);
 		}
 	}
 
@@ -61,5 +75,7 @@ public class CommentCRUDService implements ICommentCRUDService {
 		}
 		selectAllComments().add(comment);
 		commentRepo.save(comment);
+		
+		systemLogger.logInfo("Ievietots jauns koments: " + comment.getDescription());
 	}
 }
