@@ -36,5 +36,5 @@ jobs:
       - name: Build and analyze
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-          SONAR_HOST_URL: https://2730-2a03-ec00-b17d-67dc-b172-41fd-fa43-dd9b.ngrok-free.app
+          SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
         run: mvn -B verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -Dsonar.projectKey=ProgInz-GalaDarbs-Fix -Dsonar.projectName='ProgInz-GalaDarbs-Fix'
