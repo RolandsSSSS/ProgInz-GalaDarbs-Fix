@@ -26,7 +26,7 @@ public class CommentCRUDService implements ICommentCRUDService {
 
 	@Override
 	public List<Comment> selectAllComments() {
-		systemLogger.logInfo("Atlasīti visi komenti.");
+		systemLogger.logInfo("Atlasīti visi komentāri.");
 		return (List<Comment>) commentRepo.findAll();
 	}
 
@@ -34,11 +34,11 @@ public class CommentCRUDService implements ICommentCRUDService {
 	public Comment selectCommentById(long idco) {
 		for (Comment comment : selectAllComments()) {
 			if (comment.getIdco() == idco) {
-				systemLogger.logInfo("Atlasīts koments ar ID: " + idco);
+				systemLogger.logInfo("Atlasīts komentārs ar ID: " + idco);
 				return comment;
 			}
 		}
-		systemLogger.logWarning("Koments ar ID " + idco + " netika atrasts.");
+		systemLogger.logWarning("Komentārs ar ID " + idco + " netika atrasts.");
 		return null;
 	}
 
@@ -46,10 +46,10 @@ public class CommentCRUDService implements ICommentCRUDService {
 	public void deleteCommentById(long idco) {
 		Comment comment = selectCommentById(idco);
 		if (comment != null) {
-			systemLogger.logInfo("Izdzēsts koments ar ID: " + idco);
+			systemLogger.logInfo("Izdzēsts komentārs ar ID: " + idco);
 			commentRepo.delete(comment);
 		} else {
-	        systemLogger.logWarning("Mēģināts izdzēst neesošu komentu ar ID " + idco);
+	        systemLogger.logWarning("Mēģināts izdzēst neesošu komentāru ar ID " + idco);
 		}
 	}
 
@@ -60,9 +60,9 @@ public class CommentCRUDService implements ICommentCRUDService {
 			comment.setDescription(updatedComment.getDescription());
 			commentRepo.save(comment);
 			
-			systemLogger.logInfo("Koments atjaunināts ar ID: " + idco);
+			systemLogger.logInfo("Komentārs atjaunināts ar ID: " + idco);
 		} else {
-	        systemLogger.logWarning("Mēģināts atjaunināt neesošu komentu ar ID " + idco);
+	        systemLogger.logWarning("Mēģināts atjaunināt neesošu komentāru ar ID " + idco);
 		}
 	}
 
@@ -76,6 +76,6 @@ public class CommentCRUDService implements ICommentCRUDService {
 		selectAllComments().add(comment);
 		commentRepo.save(comment);
 		
-		systemLogger.logInfo("Ievietots jauns koments: " + comment.getDescription());
+		systemLogger.logInfo("Ievietots jauns komentars: " + comment.getDescription());
 	}
 }
