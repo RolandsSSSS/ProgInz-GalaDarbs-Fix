@@ -61,9 +61,9 @@ public class WebSecurityConfig {
 		.requestMatchers("/course/update/**").fullyAuthenticated()
 		.requestMatchers("/course/remove/**").fullyAuthenticated()
 		
-		.requestMatchers("/Person/showAll").fullyAuthenticated()
-		.requestMatchers("/Person/showAll/**").fullyAuthenticated()
-		.requestMatchers("/Person/addPage").fullyAuthenticated()
+		.requestMatchers("/Person/All").fullyAuthenticated()
+		.requestMatchers("/Person/All/**").fullyAuthenticated()
+		.requestMatchers("/Person/AddPage").fullyAuthenticated()
 		.requestMatchers("/Person/update/**").fullyAuthenticated()
 		.requestMatchers("/Person/remove/**").fullyAuthenticated()
 		

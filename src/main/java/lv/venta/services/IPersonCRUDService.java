@@ -16,16 +16,21 @@ import lv.venta.repos.IPersonRepo;
 
 @Service
 public class IPersonCRUDService implements IPersonCRUD {
+	
+	@Autowired
+	private final SystemLogger systemLogger;
  
     @Autowired
     private IPersonRepo personRepo;
 
-    public IPersonCRUDService(IPersonRepo personRepo) {
+    public IPersonCRUDService(IPersonRepo personRepo, SystemLogger systemLogger) {
         this.personRepo = personRepo;
+        this.systemLogger = systemLogger;
     }
 
     @Override
     public List<Person> selectAllPersons() {
+    	systemLogger.logInfo("Atlasītas visas personas.");
         return (List<Person>) personRepo.findAll();
     }
 
@@ -36,6 +41,7 @@ public class IPersonCRUDService implements IPersonCRUD {
             ArrayList<Person> allProductsWithTitle = personRepo.findByName(title);
             return allProductsWithTitle;
         } else {
+        	systemLogger.logError("Metode retrieveAllPersonsByTitle izraisīja izņēmuma situāciju: Wrong title");
             throw new Exception("Wrong title");
         }
     }
@@ -45,6 +51,7 @@ public class IPersonCRUDService implements IPersonCRUD {
       
 
         personRepo.save(person);
+        systemLogger.logInfo("Ievietots jauna persona: " + person);
         return person;
     }
 
@@ -53,14 +60,17 @@ public class IPersonCRUDService implements IPersonCRUD {
     public Person updatePersonByParams(Person person) throws Exception {
     	
     	 personRepo.save(person);
+    	 systemLogger.logInfo("Atjaunināta persona: " + person.getName() + " " + person.getSurname());
          return person;
     }
 
     @Override
     public void deletePersonById(Long id) throws Exception {
         if (personRepo.existsById(id)) {
+        	systemLogger.logInfo("Izdzēsta persona ar ID: " + id);
             personRepo.deleteById(id);
         } else {
+        	systemLogger.logError("Metode deletePersonById izraisīja izņēmuma situāciju: Wrong id");
             throw new Exception("Wrong id");
         }
     }
@@ -69,8 +79,10 @@ public class IPersonCRUDService implements IPersonCRUD {
     @Override
     public Person retrieveOnePersonById(Long id) throws Exception {
         if (personRepo.existsById(id)) {
+        	systemLogger.logInfo("Atlasīta persona ar ID: " + id);
             return personRepo.findById(id).get();
         } else {
+        	systemLogger.logError("Metode retrieveOnePersonById izraisīja izņēmuma situāciju: Wrong id");
             throw new Exception("Wrong id");
         }
     }
