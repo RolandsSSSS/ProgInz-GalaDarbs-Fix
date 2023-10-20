@@ -16,18 +16,23 @@ import lv.venta.services.impl.IThesisCRUDService;
 public class ThesisCRUDService implements IThesisCRUDService {
 
 	@Autowired
+	private final SystemLogger systemLogger;
+	
+	@Autowired
 	private IThesisRepo thesisRepo;
 
 	@Autowired
 	private ICommentRepo commentRepo;
 
 	@Autowired
-	public ThesisCRUDService(IThesisRepo thesisRepo) {
+	public ThesisCRUDService(IThesisRepo thesisRepo, SystemLogger systemLogger) {
 		this.thesisRepo = thesisRepo;
+		this.systemLogger = systemLogger;
 	}
 
 	@Override
 	public List<Thesis> selectAllThesis() {
+		systemLogger.logInfo("Atlasīti visi diplomdarbi.");
 		return (List<Thesis>) thesisRepo.findAll();
 	}
 
@@ -35,9 +40,11 @@ public class ThesisCRUDService implements IThesisCRUDService {
 	public Thesis selectThesisById(long idt) {
 		for (Thesis thesis : selectAllThesis()) {
 			if (thesis.getIdt() == idt) {
+				systemLogger.logInfo("Atlasīts diplomdarbs ar ID: " + idt);
 				return thesis;
 			}
 		}
+		systemLogger.logWarning("Diplomdarbs ar ID " + idt + " netika atrasts.");
 		return null;
 	}
 
@@ -45,6 +52,8 @@ public class ThesisCRUDService implements IThesisCRUDService {
 	public void deleteThesisById(long idt) {
 		Thesis thesis = selectThesisById(idt);
 		if (thesis != null) {
+			systemLogger.logInfo("Izdzēsts diplomdarbu ar ID: " + idt);
+			
 			for (Comment comment : thesis.getComments()) {
 				comment.setThesis(null);
 				commentRepo.deleteById(comment.getIdco());
@@ -57,6 +66,8 @@ public class ThesisCRUDService implements IThesisCRUDService {
 
 			thesis.getComments().clear();
 			thesisRepo.delete(thesis);
+		} else {
+	        systemLogger.logWarning("Mēģināts izdzēst neesošu diplomdarbu ar ID " + idt);
 		}
 	}
 
@@ -70,6 +81,10 @@ public class ThesisCRUDService implements IThesisCRUDService {
 			thesis.setTasks(updatedThesis.getTasks());
 			thesis.setAccStatus(updatedThesis.getAccStatus());
 			thesisRepo.save(thesis);
+			
+			systemLogger.logInfo("Diplomdarbs atjaunināts ar ID: " + idt);
+		} else {
+	        systemLogger.logWarning("Mēģināts atjaunināt neesošu diplomdarbu ar ID " + idt);
 		}
 	}
 
@@ -89,5 +104,6 @@ public class ThesisCRUDService implements IThesisCRUDService {
 		selectAllThesis().add(thesis);
 		thesisRepo.save(thesis);
 
+		systemLogger.logInfo("Ievietots jauns diplomdarbs: " + "(LV) " + thesis.getTitleLv() + " (EN) " + thesis.getTitleEn());
 	}
 }

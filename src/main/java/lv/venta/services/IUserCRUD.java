@@ -12,19 +12,23 @@ import lv.venta.services.impl.IUserCRUDService;
 @Service
 public class IUserCRUD implements IUserCRUDService{
 
+	@Autowired
+	private final SystemLogger systemLogger;
 	
 	@Autowired
 	private IUserRepo userRepo;
 	
 
 	@Autowired
-	public IUserCRUD(IUserRepo userRepo) {
+	public IUserCRUD(IUserRepo userRepo, SystemLogger systemLogger) {
 		this.userRepo = userRepo;
+		this.systemLogger = systemLogger;
 	}
 	
 	
 	@Override
 	public List<User> selectAllUsers() {
+		systemLogger.logInfo("Atlasīti visi lietotāji.");
 		return (List<User>) userRepo.findAll();
 	}
 
@@ -32,9 +36,11 @@ public class IUserCRUD implements IUserCRUDService{
 	public User selectUserById(long idu) {
 		for (User user : selectAllUsers()) {
 			if (user.getIdu() == idu) {
+				systemLogger.logInfo("Atlasīts lietotājs ar ID: " + idu);
 				return user;
 			}
 		}
+		systemLogger.logWarning("Lietotājs ar ID " + idu + " netika atrasts.");
 		return null;
 	}
 
@@ -42,8 +48,11 @@ public class IUserCRUD implements IUserCRUDService{
 	public void deleteUserById(long idc) {
 		User user = selectUserById(idc);
 		if (user != null) {
+			systemLogger.logInfo("Izdzēsts lietotājs ar ID: " + idc);
 			
 			userRepo.delete(user);
+		} else {
+	        systemLogger.logWarning("Mēģināts izdzēst neesošu lietotāju ar ID " + idc);
 		}
 	}
 		
@@ -56,6 +65,10 @@ public class IUserCRUD implements IUserCRUDService{
 			user.setEmail(updatedUser.getEmail());
 			user.setPassword(updatedUser.getPassword());
 			userRepo.save(user);
+			
+			systemLogger.logInfo("Lietotājs atjaunināts ar ID: " + idu);
+		} else {
+	        systemLogger.logWarning("Mēģināts atjaunināt neesošu lietotāju ar ID " + idu);
 		}
 	}
 	
@@ -69,6 +82,8 @@ public class IUserCRUD implements IUserCRUDService{
 		}
 		selectAllUsers().add(User);
 		userRepo.save(User);
+		
+		systemLogger.logInfo("Ievietots jauns lietotājs: " + User.getEmail());
 	}
 		
 	}
