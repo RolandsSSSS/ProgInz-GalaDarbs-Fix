@@ -122,10 +122,9 @@ public class ProgInzGalaDarbsFixApplication {
 				String textToTranslate = "Tulkošana strādā";
 				
 				try{
-					String translatedText = Translate.translate(langFrom, langTo, textToTranslate);
-					logger.info("Tulkojums: " + translatedText);
+					Translate.translate(langFrom, langTo, textToTranslate);
 				}catch (IOException e){
-					logger.log(Level.SEVERE, "Kļūda veicot tulkojumu, " + e);
+					logger.log(Level.SEVERE, () -> "Kļūda veicot tulkojumu, " + e);
 				}
 			}
 		};
