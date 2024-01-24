@@ -15,6 +15,7 @@ import lv.venta.services.AcademicPersonelCRUDService;
 @RequestMapping("/academicPersonel")
 public class AcademicPersonelController {
 	public static final String ACADEMIC_PERSONELS_ATTRIBUTE = "MyAcademiPersonels";
+	private static final String REDIRECT_TO_SHOW_ALL = "redirect:/academicPersonel/showAll";
 
 	private AcademicPersonelCRUDService academicPersonelService;
 	
@@ -38,7 +39,7 @@ public class AcademicPersonelController {
 	public String deleteAcademicPersonelById(@PathVariable long id, org.springframework.ui.Model academicPersonel) {
 		academicPersonelService.deleteAcademicPersonelById(id);
 		academicPersonel.addAttribute(ACADEMIC_PERSONELS_ATTRIBUTE, academicPersonelService.selectAllAcademicPersonels());
-		return "redirect:/academicPersonel/showAll";
+		return REDIRECT_TO_SHOW_ALL;
 	}
 
 	@GetMapping("/update/{id}")
@@ -49,7 +50,7 @@ public class AcademicPersonelController {
 			return "academicpersonel-update-page";
 		} else {
 			academicPersonel.addAttribute(ACADEMIC_PERSONELS_ATTRIBUTE, academicPersonelService.selectAllAcademicPersonels());
-			return "redirect:/academicPersonel/showAll";
+			return REDIRECT_TO_SHOW_ALL;
 		}
 	}
 
@@ -62,8 +63,8 @@ public class AcademicPersonelController {
 		}
 
 		academicPersonelService.updateAcademicPersonelById(id, updatedAcademicPersonel);
-		academicPersonel.addAttribute("MyAcademiPersonels", academicPersonelService.selectAllAcademicPersonels());
-		return "redirect:/academicPersonel/showAll";
+		academicPersonel.addAttribute(ACADEMIC_PERSONELS_ATTRIBUTE, academicPersonelService.selectAllAcademicPersonels());
+		return REDIRECT_TO_SHOW_ALL;
 	}
 
 	@GetMapping("/addNew")
@@ -79,7 +80,7 @@ public class AcademicPersonelController {
 		AcademicPersonel newAcademicPersonel = new AcademicPersonel(academicPersonel.getName(), academicPersonel.getSurname(), academicPersonel.getPersoncode(),academicPersonel.getUser(), academicPersonel.getDegree());
 		academicPersonelService.insertNewAcademicPersonel(newAcademicPersonel);
 
-		return "redirect:/academicPersonel/showAll";
+		return REDIRECT_TO_SHOW_ALL;
 	}
 
 }
