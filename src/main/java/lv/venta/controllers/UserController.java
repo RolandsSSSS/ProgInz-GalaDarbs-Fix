@@ -1,5 +1,4 @@
 package lv.venta.controllers;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -15,73 +14,75 @@ import lv.venta.services.IUserCRUD;
 @Controller
 @RequestMapping("/User")
 public class UserController {
+	public static final String USER_ATTRIBUTE = "MyUsers";
+	private static final String REDIRECT_TO_SHOW_ALL = "redirect:/User/showAll";
 	
-
-	
-	@Autowired
 	private IUserCRUD userCRUD;
-	@Autowired
 	private IUserRepo userRepo;
+	
+	public UserController(IUserCRUD userCRUD, IUserRepo userRepo) {
+        this.userCRUD = userCRUD;
+        this.userRepo = userRepo;
+    }
 
-		@GetMapping("/showAll")
-		public String selectAllUsers(org.springframework.ui.Model User) {
-			User.addAttribute("MyUsers", userCRUD.selectAllUsers());
-			return "User-all-page";
-		}
+	@GetMapping("/showAll")
+	public String selectAllUsers(org.springframework.ui.Model user) {
+		user.addAttribute(USER_ATTRIBUTE, userCRUD.selectAllUsers());
+		return "User-all-page";
+	}
 
-		@GetMapping("/showAll/{id}")
-		public String selectUserById(@PathVariable long id, org.springframework.ui.Model User) {
-			User.addAttribute("MyUsers", userCRUD.selectUserById(id));
-			return "User-one-page";
-		}
+	@GetMapping("/showAll/{id}")
+	public String selectUserById(@PathVariable long id, org.springframework.ui.Model user) {
+		user.addAttribute(USER_ATTRIBUTE, userCRUD.selectUserById(id));
+		return "User-one-page";
+	}
 
-		@GetMapping("/remove/{id}")
-		public String deleteUserById(@PathVariable long id, org.springframework.ui.Model User) {
-			userCRUD.deleteUserById(id);
-			User.addAttribute("MyUsers", userCRUD.selectAllUsers());
-			return "redirect:/User/showAll";
-		}
+	@GetMapping("/remove/{id}")
+	public String deleteUserById(@PathVariable long id, org.springframework.ui.Model user) {
+		userCRUD.deleteUserById(id);
+		user.addAttribute(USER_ATTRIBUTE, userCRUD.selectAllUsers());
+		return REDIRECT_TO_SHOW_ALL;
+	}
 
-		@GetMapping("/update/{id}")
-		public String showUpdateForm(@PathVariable long id, org.springframework.ui.Model User) {
-			User temp = userCRUD.selectUserById(id);
-			if (temp != null) {
-				User.addAttribute("updatedUser", temp);
-				return "User-UpdatePage";
-			} else {
-				User.addAttribute("MyUsers", userCRUD.selectAllUsers());
-				return "redirect:/User/showAll";
-			}
+	@GetMapping("/update/{id}")
+	public String showUpdateForm(@PathVariable long id, org.springframework.ui.Model user) {
+		User temp = userCRUD.selectUserById(id);
+		if (temp != null) {
+			user.addAttribute("updatedUser", temp);
+			return "User-UpdatePage";
+		} else {
+			user.addAttribute(USER_ATTRIBUTE, userCRUD.selectAllUsers());
+			return REDIRECT_TO_SHOW_ALL;
 		}
+	}
 
-		@PostMapping("/update/{id}")
-		public String updateUserById(@PathVariable long id, @Valid User updatedUser, BindingResult bindingResult, org.springframework.ui.Model User) {
-			 if (bindingResult.hasErrors()) {
-				 User.addAttribute("updatedUser", updatedUser);
-				 return "User-UpdatePage";
-			 }
-			
-			userCRUD.updateUserById(id, updatedUser);
-			User.addAttribute("MyUsers", userCRUD.selectAllUsers());
-			return "redirect:/User/showAll";
-		}
+	@PostMapping("/update/{id}")
+	public String updateUserById(@PathVariable long id, @Valid User updatedUser, BindingResult bindingResult, org.springframework.ui.Model user) {
+		 if (bindingResult.hasErrors()) {
+			 user.addAttribute("updatedUser", updatedUser);
+			 return "User-UpdatePage";
+		 }
 		
-		@GetMapping("/addNew")
-		public String showAddUserForm(User User) {
+		userCRUD.updateUserById(id, updatedUser);
+		user.addAttribute(USER_ATTRIBUTE, userCRUD.selectAllUsers());
+		return REDIRECT_TO_SHOW_ALL;
+	}
+	
+	@GetMapping("/addNew")
+	public String showAddUserForm(User user) {
+		return "User-add-page";
+	}
+
+	@PostMapping("/addNew")
+	public String addNewUser(@Valid User user, BindingResult bindingResult) {
+		if (bindingResult.hasErrors()) {
 			return "User-add-page";
 		}
+		User newUser = new User( user.getPassword(), user.getEmail());
+		userCRUD.insertNewUser(newUser);
 
-		@PostMapping("/addNew")
-		public String addNewUser(@Valid User User, BindingResult bindingResult) {
-			if (bindingResult.hasErrors()) {
-				return "User-add-page";
-			}
-			User newUser = new User( User.getPassword(), User.getEmail());
-			userCRUD.insertNewUser(newUser);
-
-			return "redirect:/User/showAll";
-		}
-
+		return REDIRECT_TO_SHOW_ALL;
 	}
+}
 
 

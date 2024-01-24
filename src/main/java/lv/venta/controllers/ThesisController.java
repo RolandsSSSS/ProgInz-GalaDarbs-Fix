@@ -1,6 +1,5 @@
 package lv.venta.controllers;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -10,8 +9,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import jakarta.validation.Valid;
 import lv.venta.models.Thesis;
-import lv.venta.models.users.AcademicPersonel;
-import lv.venta.services.CourseCRUDService;
 import lv.venta.services.ThesisCRUDService;
 
 @Controller
