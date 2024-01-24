@@ -1,6 +1,15 @@
 package lv.venta.controllers;
 
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.net.http.HttpHeaders;
 import java.util.List;
+
+import org.springframework.core.io.InputStreamResource;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -9,9 +18,16 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.multipart.MultipartFile;
 
+import jakarta.servlet.ServletException;
+import jakarta.servlet.http.HttpServlet;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import lv.venta.services.IPersonCRUD;
+import lv.venta.services.Excel.ExcelExportService;
+import lv.venta.services.Excel.ExcelUploadService;
 import lv.venta.models.users.AcademicPersonel;
 import lv.venta.models.users.Person;
 import lv.venta.repos.IPersonRepo;
@@ -115,6 +131,55 @@ public class PersonsController {
 		}
 
 		return REDIRECT_TO_SHOW_ALL;
+	}
+
+	@PostMapping("/Import")
+	public String importPersons(@ModelAttribute("file") MultipartFile file) {
+		if (!ExcelUploadService.isValidExcelFile(file)) {
+			return REDIRECT_TO_SHOW_ALL;
+
+		}
+
+		try {
+			List<Person> persons = ExcelUploadService.getPersonDataFromExcel(file.getInputStream());
+			System.out.println(persons);
+
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
+		return REDIRECT_TO_SHOW_ALL;
+	}
+
+	@GetMapping("/Export")
+	protected void doGet(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
+		// Assuming personsList is the list of Person objects
+		List<Person> allPersons = (List<Person>) personRepo.findAll();
+
+		// Generate the Excel file
+		String filePath = "persons.xlsx";
+		ExcelExportService.exportPersonsToExcel(allPersons, filePath);
+
+		// Set the content type and headers for the response
+		response.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
+		response.setHeader("Content-Disposition", "attachment; filename=persons.xlsx");
+
+		// Get the file as input stream
+		InputStream fileStream = new FileInputStream(filePath);
+
+		// Copy the file's input stream to the response's output stream
+		OutputStream out = response.getOutputStream();
+		byte[] buffer = new byte[4096];
+		int length;
+		while ((length = fileStream.read(buffer)) > 0) {
+			out.write(buffer, 0, length);
+		}
+
+		// Close streams
+		out.flush();
+		out.close();
+		fileStream.close();
 	}
 
 }

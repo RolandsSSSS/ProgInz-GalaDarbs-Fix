@@ -13,6 +13,7 @@
 
 	<div class="container">
 		<h1 data-translation="Visas personas">Visas personas</h1>
+	
 		<table class="table table-striped">
 			<thead>
 				<tr>
@@ -42,9 +43,20 @@
 		</table>
 	</div>
 
+	
+	<div class="mb-3">
+			<a th:href="@{/Person/Export}" class="btn btn-primary" data-translation="Export">Export</a>
+			<form th:action="@{/Person/Import}" method="post" enctype="multipart/form-data">
+				<input type="file" name="file" class="form-control-file">
+				<button type="submit" class="btn btn-primary" data-translation="Import">Import</button>
+			</form>
+		</div>
+
 	<div th:replace="fragments/footer :: footer"></div>
 
 	<div th:replace="fragments/translateScript :: translate"></div>
+
+	
 
 </body>
 
