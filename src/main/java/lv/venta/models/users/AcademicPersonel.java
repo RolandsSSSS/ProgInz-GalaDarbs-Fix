@@ -26,18 +26,18 @@ import lv.venta.models.Thesis;
 @NoArgsConstructor
 @AttributeOverride(name = "Idp", column = @Column(name = "Ida"))
 public class AcademicPersonel extends Person {
-	
+
 	@Column(name = "Degree")
 	private Degree degree;
-	
+
 	@OneToMany(mappedBy = "supervisor", cascade = CascadeType.REMOVE)
 	private Collection<Thesis> thesis;
-	
+
 	@ManyToMany(mappedBy = "reviewers", cascade = CascadeType.REMOVE)
 	private Collection<Thesis> thesisForReviews = new ArrayList<>();
-	
+
 	public void addThesisForReviews(Thesis inputThesis) {
-		if(! thesisForReviews.contains(inputThesis)) {
+		if (!thesisForReviews.contains(inputThesis)) {
 			thesisForReviews.add(inputThesis);
 		}
 	}
@@ -50,15 +50,16 @@ public class AcademicPersonel extends Person {
 		super(name, surname, personcode, user);
 		this.degree = degree;
 	}
+
 	@OneToMany(mappedBy = "personel", cascade = CascadeType.REMOVE)
 	private Collection<Comment> comments;
 
 	public void remove() {
-	    if (this.thesis != null) {
-	        for (Thesis academicThesis : this.thesis) {
-	        	academicThesis.setSupervisor(null);
-	        }
-	    }
+		if (this.thesis != null) {
+			for (Thesis academicThesis : this.thesis) {
+				academicThesis.setSupervisor(null);
+			}
+		}
 	}
 
 }

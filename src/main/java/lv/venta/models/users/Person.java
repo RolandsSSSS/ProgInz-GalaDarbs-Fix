@@ -30,31 +30,28 @@ public class Person {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private long idp;
-	
+
 	@Column(name = "Name")
 	@NotNull
 	@Pattern(regexp = "[A-ZĒŪĪĻĶŠĀŽČŅ][a-zēūīļķšāžčņ\\ ]+", message = "Pirmajam burtam jābūt lielajam")
 	@Size(min = 3, max = 15)
 	private String name;
-	
+
 	@NotNull
 	@Size(min = 3, max = 15)
 	@Pattern(regexp = "[A-ZĒŪĪĻĶŠĀŽČŅ][a-zēūīļķšāžčņ\\ ]+", message = "Pirmajam burtam jābūt lielajam")
 	@Column(name = "Surname")
 	private String surname;
-	
+
 	@NotNull
 	@Size(min = 11, max = 13)
 	@Pattern(regexp = "\\d{6}-\\d{5}", message = "Neatbilstošs personas kods")
 	@Column(name = "Personcode")
 	private String personcode;
-	
-	
+
 	@OneToOne
 	@JoinColumn(name = "Idu")
 	private User user;
-	
-	
 
 	public Person(
 			@NotNull @Pattern(regexp = "[A-ZĒŪĪĻĶŠĀŽČŅ][a-zēūīļķšāžčņ\\ ]+", message = "Pirmajam burtam jābūt lielajam") @Size(min = 3, max = 15) String name,
@@ -66,16 +63,5 @@ public class Person {
 		this.personcode = personcode;
 		this.user = user;
 	}
-	
 
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
 }

@@ -14,7 +14,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-
 @Table(name = "user_table")
 @Entity
 @Getter
@@ -27,11 +26,11 @@ public class User {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private long idu;
-	
+
 	@Column(name = "Password")
 	@NotNull
 	private String password;
-	
+
 	@Column(name = "Email")
 	@NotNull
 	@Email
@@ -41,19 +40,8 @@ public class User {
 		this.password = password;
 		this.email = email;
 	}
-	
+
 	@OneToOne(mappedBy = "user")
 	private Person person;
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
+
 }

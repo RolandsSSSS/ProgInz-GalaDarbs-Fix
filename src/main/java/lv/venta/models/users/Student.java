@@ -27,29 +27,25 @@ import lv.venta.models.Thesis;
 @Setter
 @NoArgsConstructor
 @AttributeOverride(name = "Idp", column = @Column(name = "Idp"))
-public class Student extends Person{
-	
+public class Student extends Person {
+
 	@Column(name = "matriculaNo")
 	@NotNull
-	//@Size(min = 8, max = 20)
+	// @Size(min = 8, max = 20)
 	@Pattern(regexp = "\\d{8,20}")
 	private String matriculaNo;
-	
+
 	@Column(name = "FinancialDebt")
 	private boolean financialDebt;
 
 	@ManyToMany
-	@JoinTable(name = "student_debt_courses_table",
-	joinColumns = @JoinColumn(name="Ids"),
-	inverseJoinColumns = @JoinColumn(name="Idc"))
-	
+	@JoinTable(name = "student_debt_courses_table", joinColumns = @JoinColumn(name = "Ids"), inverseJoinColumns = @JoinColumn(name = "Idc"))
+
 	private Collection<Course> debtCourses = new ArrayList<Course>();
-	
-	
+
 	@OneToMany(mappedBy = "student", cascade = CascadeType.ALL, orphanRemoval = true)
 	private Collection<Thesis> thesis;
-	
-	
+
 	public Student(
 			@NotNull @Pattern(regexp = "[A-ZĒŪĪĻĶŠĀŽČŅ][a-zēūīļķšāžčņ\\ ]+", message = "Pirmajam burtam jābūt lielajam") @Size(min = 3, max = 15) String name,
 			@NotNull @Size(min = 3, max = 15) @Pattern(regexp = "[A-ZĒŪĪĻĶŠĀŽČŅ][a-zēūīļķšāžčņ\\ ]+", message = "Pirmajam burtam jābūt lielajam") String surname,
@@ -59,15 +55,11 @@ public class Student extends Person{
 		this.matriculaNo = matriculaNo;
 		this.financialDebt = financialDebt;
 	}
-	
+
 	public void addDebtCourse(Course course) {
-		if(!debtCourses.contains(course)) {
+		if (!debtCourses.contains(course)) {
 			debtCourses.add(course);
 		}
 	}
-
-	
-	
-	
 
 }

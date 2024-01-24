@@ -6,9 +6,8 @@ import org.springframework.data.repository.CrudRepository;
 
 import lv.venta.models.users.Person;
 
-public interface IPersonRepo  extends CrudRepository<Person, Long>{
+public interface IPersonRepo extends CrudRepository<Person, Long> {
 
-	ArrayList<Person> findByName(String var);
+	ArrayList<Person> findByName(String name);
 
-	
 }
