@@ -1,6 +1,5 @@
 package lv.venta.controllers;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -10,33 +9,37 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import jakarta.validation.Valid;
 import lv.venta.models.Thesis;
-import lv.venta.models.users.AcademicPersonel;
 import lv.venta.services.ThesisCRUDService;
 
 @Controller
 @RequestMapping("/thesis")
 public class ThesisController {
+	public static final String THESIS_ATTRIBUTE = "MyThesis";
+	private static final String REDIRECT_TO_SHOW_ALL = "redirect:/thesis/showAll";
 
-	@Autowired
 	private ThesisCRUDService thesisService;
+	
+	public ThesisController(ThesisCRUDService thesisService) {
+        this.thesisService = thesisService;
+    }
 
 	@GetMapping("/showAll")
 	public String selectAllThesis(org.springframework.ui.Model thesis) {
-		thesis.addAttribute("MyThesis", thesisService.selectAllThesis());
+		thesis.addAttribute(THESIS_ATTRIBUTE, thesisService.selectAllThesis());
 		return "thesis-all-page";
 	}
 
 	@GetMapping("/showAll/{id}")
 	public String selectThesisById(@PathVariable long id, org.springframework.ui.Model thesis) {
-		thesis.addAttribute("MyThesis", thesisService.selectThesisById(id));
+		thesis.addAttribute(THESIS_ATTRIBUTE, thesisService.selectThesisById(id));
 		return "thesis-one-page";
 	}
 
 	@GetMapping("/remove/{id}")
 	public String deleteThesisById(@PathVariable long id, org.springframework.ui.Model thesis) {
 		thesisService.deleteThesisById(id);
-		thesis.addAttribute("MyThesis", thesisService.selectAllThesis());
-		return "redirect:/thesis/showAll";
+		thesis.addAttribute(THESIS_ATTRIBUTE, thesisService.selectAllThesis());
+		return REDIRECT_TO_SHOW_ALL;
 	}
 
 	@GetMapping("/update/{id}")
@@ -46,8 +49,8 @@ public class ThesisController {
 			thesis.addAttribute("updatedThesis", temp);
 			return "thesis-update-page";
 		} else {
-			thesis.addAttribute("MyThesis", thesisService.selectAllThesis());
-			return "redirect:/thesis/showAll";
+			thesis.addAttribute(THESIS_ATTRIBUTE, thesisService.selectAllThesis());
+			return REDIRECT_TO_SHOW_ALL;
 		}
 	}
 
@@ -60,8 +63,8 @@ public class ThesisController {
 		}
 
 		thesisService.updateThesisById(id, updatedThesis);
-		thesis.addAttribute("MyThesis", thesisService.selectAllThesis());
-		return "redirect:/thesis/showAll";
+		thesis.addAttribute(THESIS_ATTRIBUTE, thesisService.selectAllThesis());
+		return REDIRECT_TO_SHOW_ALL;
 	}
 
 	@GetMapping("/addNew")
@@ -78,6 +81,6 @@ public class ThesisController {
 				thesis.getStudent(), thesis.getSupervisor());
 		thesisService.insertNewThesis(newThesis);
 
-		return "redirect:/thesis/showAll";
+		return REDIRECT_TO_SHOW_ALL;
 	}
 }
