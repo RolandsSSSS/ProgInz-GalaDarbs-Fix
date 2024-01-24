@@ -1,6 +1,5 @@
 package lv.venta.controllers;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -15,26 +14,30 @@ import lv.venta.services.AcademicPersonelCRUDService;
 @Controller
 @RequestMapping("/academicPersonel")
 public class AcademicPersonelController {
+	public static final String ACADEMIC_PERSONELS_ATTRIBUTE = "MyAcademiPersonels";
 
-	@Autowired
 	private AcademicPersonelCRUDService academicPersonelService;
+	
+	public AcademicPersonelController(AcademicPersonelCRUDService academicPersonelService) {
+        this.academicPersonelService = academicPersonelService;
+    }
 
 	@GetMapping("/showAll")
 	public String selectAllAcademicPersonels(org.springframework.ui.Model academicPersonel) {
-		academicPersonel.addAttribute("MyAcademiPersonels", academicPersonelService.selectAllAcademicPersonels());
+		academicPersonel.addAttribute(ACADEMIC_PERSONELS_ATTRIBUTE, academicPersonelService.selectAllAcademicPersonels());
 		return "academicpersonel-all-page";
 	}
 
 	@GetMapping("/showAll/{id}")
 	public String selectAcademicPersonelById(@PathVariable long id, org.springframework.ui.Model academicPersonel) {
-		academicPersonel.addAttribute("MyAcademiPersonels", academicPersonelService.selectAcademicPersonelById(id));
+		academicPersonel.addAttribute(ACADEMIC_PERSONELS_ATTRIBUTE, academicPersonelService.selectAcademicPersonelById(id));
 		return "academicpersonel-one-page";
 	}
 
 	@GetMapping("/remove/{id}")
 	public String deleteAcademicPersonelById(@PathVariable long id, org.springframework.ui.Model academicPersonel) {
 		academicPersonelService.deleteAcademicPersonelById(id);
-		academicPersonel.addAttribute("MyAcademiPersonels", academicPersonelService.selectAllAcademicPersonels());
+		academicPersonel.addAttribute(ACADEMIC_PERSONELS_ATTRIBUTE, academicPersonelService.selectAllAcademicPersonels());
 		return "redirect:/academicPersonel/showAll";
 	}
 
@@ -45,7 +48,7 @@ public class AcademicPersonelController {
 			academicPersonel.addAttribute("updatedAcademicPersonel", temp);
 			return "academicpersonel-update-page";
 		} else {
-			academicPersonel.addAttribute("MyAcademiPersonels", academicPersonelService.selectAllAcademicPersonels());
+			academicPersonel.addAttribute(ACADEMIC_PERSONELS_ATTRIBUTE, academicPersonelService.selectAllAcademicPersonels());
 			return "redirect:/academicPersonel/showAll";
 		}
 	}
