@@ -8,6 +8,10 @@ import java.net.URL;
 import java.net.URLEncoder;
 
 public class Translate {
+	private Translate() {
+		throw new IllegalStateException("Utility class");
+	}
+
 	public static String translate(String langFrom, String langTo, String text) throws IOException {
 		String apiKey = "AIzaSyAF7ut6hghZgvfhTOojMutfeCubKWXI6E8";
 
