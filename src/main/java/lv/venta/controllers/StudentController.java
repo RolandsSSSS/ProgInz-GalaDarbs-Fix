@@ -22,6 +22,8 @@ import lv.venta.repos.users.IStudentRepo;
 public class StudentController {
 	public static final String STUDENT_ATTRIBUTE = "AllStudents";
 	private static final String REDIRECT_TO_SHOW_ALL = "redirect:/Student/All";
+	private static final String REDIRECT_TO_SHOW_ALL_COURSE = "redirect:/course/showAll";
+	private static final String ERROR_MESSAGE_KEY = "errorMessage";
 
 	private IStudentRepo studentRepo;
 	private IStudentCRUD1 studentCrud;
@@ -81,16 +83,16 @@ public class StudentController {
 		try {
 			studentRepo.deleteById(id);
 			model.addAttribute(STUDENT_ATTRIBUTE, studentCrud.selectAllStudents());
-			return "redirect:/course/showAll";
+			return REDIRECT_TO_SHOW_ALL_COURSE;
 		} catch (EmptyResultDataAccessException e) {
-			model.addAttribute("errorMessage", "Student with ID " + id + " not found");
-			return "redirect:/course/showAll";
+			model.addAttribute(ERROR_MESSAGE_KEY, "Student with ID " + id + " not found");
+			return REDIRECT_TO_SHOW_ALL_COURSE;
 		} catch (DataAccessException e) {
-			model.addAttribute("errorMessage", "An error occurred while deleting the student");
-			return "redirect:/course/showAll";
+			model.addAttribute(ERROR_MESSAGE_KEY, "An error occurred while deleting the student");
+			return REDIRECT_TO_SHOW_ALL_COURSE;
 		} catch (Exception e) {
-			model.addAttribute("errorMessage", "An unexpected error occurred");
-			return "redirect:/course/showAll";
+			model.addAttribute(ERROR_MESSAGE_KEY, "An unexpected error occurred");
+			return REDIRECT_TO_SHOW_ALL_COURSE;
 		}
 	}
 
