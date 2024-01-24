@@ -1,7 +1,5 @@
 package lv.venta.models.users;
 
-import java.util.Collection;
-
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -16,13 +14,11 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-
 @Table(name = "user_table")
 @Entity
 @Getter
 @Setter
 @NoArgsConstructor
-//TODO pielikt @ToString, ja nepieciešams
 public class User {
 
 	@Setter(value = AccessLevel.NONE)
@@ -30,16 +26,11 @@ public class User {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private long idu;
-	
-	
-	//TODO Data JPA anotācijas
-	//TODO validāciju anotācijas
-	
+
 	@Column(name = "Password")
 	@NotNull
-	//TODO papildinat ar validāciju, kad ir zināms passwordEncoder
-	private String password;//TODO kad pievienos Spring Security, tad jāuzliek passwordEncoder
-	
+	private String password;
+
 	@Column(name = "Email")
 	@NotNull
 	@Email
@@ -49,19 +40,8 @@ public class User {
 		this.password = password;
 		this.email = email;
 	}
-	
+
 	@OneToOne(mappedBy = "user")
 	private Person person;
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
+
 }

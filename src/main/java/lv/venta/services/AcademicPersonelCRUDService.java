@@ -58,7 +58,7 @@ public class AcademicPersonelCRUDService implements IAcademicPersonelCRUDService
 		if (academicPersonel != null) {
 			systemLogger.logInfo("Izdzēsts akadēmiskais personāls ar ID: " + idp);
 			for(Thesis thesis : academicPersonel.getThesis()) {
-				thesis.getSupervisor().remove(academicPersonel);
+				thesis.getSupervisor().remove();
 			}
 			academicPersonel.getThesis().clear();
 			academicPersonelRepo.delete(academicPersonel);

@@ -62,8 +62,8 @@ public class ProgInzGalaDarbsFixApplication {
 				courseRepo.save(c1);
 				courseRepo.save(c2);
 
-				AcademicPersonel ac1 = new AcademicPersonel("Karina", "Skirmante", "121212-12121", us1, Degree.mg);
-				AcademicPersonel ac2 = new AcademicPersonel("Karlis", "Immers", "121212-12123", us2, Degree.mg);
+				AcademicPersonel ac1 = new AcademicPersonel("Karina", "Skirmante", "121212-12121", us1, Degree.MG);
+				AcademicPersonel ac2 = new AcademicPersonel("Karlis", "Immers", "121212-12123", us2, Degree.MG);
 				personalRepo.save(ac1);
 				personalRepo.save(ac2);
 
