@@ -1,6 +1,9 @@
 package lv.venta.controllers;
 
 import java.util.List;
+
+import org.springframework.dao.DataAccessException;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -74,16 +77,21 @@ public class StudentController {
 	}
 
 	@PostMapping("remove/{id}")
-	public String deleteStudentById(@PathVariable("id") long id, Model model) throws Exception {
+	public String deleteStudentById(@PathVariable("id") long id, Model model) {
 		try {
 			studentRepo.deleteById(id);
 			model.addAttribute(STUDENT_ATTRIBUTE, studentCrud.selectAllStudents());
 			return "redirect:/course/showAll";
-		} catch (Exception e) {
+		} catch (EmptyResultDataAccessException e) {
+			model.addAttribute("errorMessage", "Student with ID " + id + " not found");
+			return "redirect:/course/showAll";
+		} catch (DataAccessException e) {
 			model.addAttribute("errorMessage", "An error occurred while deleting the student");
 			return "redirect:/course/showAll";
+		} catch (Exception e) {
+			model.addAttribute("errorMessage", "An unexpected error occurred");
+			return "redirect:/course/showAll";
 		}
-
 	}
 
 	@GetMapping("/AddPage")
