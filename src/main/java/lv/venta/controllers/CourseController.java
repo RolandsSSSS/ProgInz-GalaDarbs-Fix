@@ -1,6 +1,5 @@
 package lv.venta.controllers;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -15,27 +14,32 @@ import lv.venta.services.CourseCRUDService;
 @Controller
 @RequestMapping("/course")
 public class CourseController {
+	public static final String COURSE_ATTRIBUTE = "MyCourses";
+	private static final String REDIRECT_TO_SHOW_ALL = "redirect:/course/showAll";
 
-	@Autowired
 	private CourseCRUDService courseService;
+	
+	public CourseController(CourseCRUDService courseService) {
+        this.courseService = courseService;
+    }
 
 	@GetMapping("/showAll")
 	public String selectAllCourses(org.springframework.ui.Model course) {
-		course.addAttribute("MyCourses", courseService.selectAllCourses());
+		course.addAttribute(COURSE_ATTRIBUTE, courseService.selectAllCourses());
 		return "course-all-page";
 	}
 
 	@GetMapping("/showAll/{id}")
 	public String selectCourseById(@PathVariable long id, org.springframework.ui.Model course) {
-		course.addAttribute("MyCourses", courseService.selectCourseById(id));
+		course.addAttribute(COURSE_ATTRIBUTE, courseService.selectCourseById(id));
 		return "course-one-page";
 	}
 
 	@GetMapping("/remove/{id}")
 	public String deleteCourseById(@PathVariable long id, org.springframework.ui.Model course) {
 		courseService.deleteCourseById(id);
-		course.addAttribute("MyCourses", courseService.selectAllCourses());
-		return "redirect:/course/showAll";
+		course.addAttribute(COURSE_ATTRIBUTE, courseService.selectAllCourses());
+		return REDIRECT_TO_SHOW_ALL;
 	}
 
 	@GetMapping("/update/{id}")
@@ -45,8 +49,8 @@ public class CourseController {
 			course.addAttribute("updatedCourse", temp);
 			return "course-update-page";
 		} else {
-			course.addAttribute("MyCourses", courseService.selectAllCourses());
-			return "redirect:/course/showAll";
+			course.addAttribute(COURSE_ATTRIBUTE, courseService.selectAllCourses());
+			return REDIRECT_TO_SHOW_ALL;
 		}
 	}
 
@@ -58,8 +62,8 @@ public class CourseController {
 		 }
 		
 		courseService.updateCourseById(id, updatedCourse);
-		course.addAttribute("MyCourses", courseService.selectAllCourses());
-		return "redirect:/course/showAll";
+		course.addAttribute(COURSE_ATTRIBUTE, courseService.selectAllCourses());
+		return REDIRECT_TO_SHOW_ALL;
 	}
 	
 	@GetMapping("/addNew")
@@ -75,7 +79,7 @@ public class CourseController {
 		Course newCourse = new Course(course.getTitle(), course.getCreditPoints());
 		courseService.insertNewCourse(newCourse);
 
-		return "redirect:/course/showAll";
+		return REDIRECT_TO_SHOW_ALL;
 	}
 
 }

@@ -1,6 +1,5 @@
 package lv.venta.controllers;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -15,27 +14,32 @@ import lv.venta.services.CommentCRUDService;
 @Controller
 @RequestMapping("/comment")
 public class CommentController {
+	public static final String COMMENT_ATTRIBUTE = "MyComments";
+	private static final String REDIRECT_TO_SHOW_ALL = "redirect:/comment/showAll";
 
-	@Autowired
 	private CommentCRUDService commentService;
+	
+	public CommentController(CommentCRUDService commentService) {
+        this.commentService = commentService;
+    }
 	
 	@GetMapping("/showAll")
 	public String selectAllComments(org.springframework.ui.Model comment) {
-		comment.addAttribute("MyComments", commentService.selectAllComments());
+		comment.addAttribute(COMMENT_ATTRIBUTE, commentService.selectAllComments());
 		return "comment-all-page";
 	}
 	
 	@GetMapping("/showAll/{id}")
 	public String selectCommentById(@PathVariable long id, org.springframework.ui.Model comment) {
-		comment.addAttribute("MyComments", commentService.selectCommentById(id));
+		comment.addAttribute(COMMENT_ATTRIBUTE, commentService.selectCommentById(id));
 		return "comment-one-page";
 	}
 	
 	@GetMapping("/remove/{id}")
 	public String deleteCommentById(@PathVariable long id, org.springframework.ui.Model comment) {
 		commentService.deleteCommentById(id);
-		comment.addAttribute("MyComments", commentService.selectAllComments());
-		return "redirect:/comment/showAll";
+		comment.addAttribute(COMMENT_ATTRIBUTE, commentService.selectAllComments());
+		return REDIRECT_TO_SHOW_ALL;
 	}
 	
 	@GetMapping("/update/{id}")
@@ -45,8 +49,8 @@ public class CommentController {
 			comment.addAttribute("updatedComment", temp);
 			return "comment-update-page";
 		} else {
-			comment.addAttribute("MyComments", commentService.selectAllComments());
-			return "redirect:/comment/showAll";
+			comment.addAttribute(COMMENT_ATTRIBUTE, commentService.selectAllComments());
+			return REDIRECT_TO_SHOW_ALL;
 		}
 	}
 
@@ -58,8 +62,8 @@ public class CommentController {
 		 }
 		
 		commentService.updateCommentById(id, updatedComment);
-		comment.addAttribute("MyComments", commentService.selectAllComments());
-		return "redirect:/comment/showAll";
+		comment.addAttribute(COMMENT_ATTRIBUTE, commentService.selectAllComments());
+		return REDIRECT_TO_SHOW_ALL;
 	}
 	
 	@GetMapping("/addNew")
@@ -75,6 +79,6 @@ public class CommentController {
 		Comment newComment = new Comment(comment.getDescription(), comment.getPersonel(), comment.getThesis());
 		commentService.insertNewComment(newComment);
 
-		return "redirect:/comment/showAll";
+		return REDIRECT_TO_SHOW_ALL;
 	}
 }
