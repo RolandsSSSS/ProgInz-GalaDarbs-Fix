@@ -1,12 +1,8 @@
 package lv.venta.controllers;
 
 import java.util.List;
-import java.util.Optional;
-
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -14,108 +10,100 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import jakarta.validation.Valid;
-import lv.venta.services.IStudentCRUDService;
 import lv.venta.services.IStudentCRUD1;
-import lv.venta.models.Course;
 import lv.venta.models.users.Student;
 import lv.venta.repos.users.IStudentRepo;
 
 @Controller
 @RequestMapping("/Student")
 public class StudentController {
+	public static final String STUDENT_ATTRIBUTE = "AllStudents";
+	private static final String REDIRECT_TO_SHOW_ALL = "redirect:/Student/All";
 
-
-	
-	@Autowired
 	private IStudentRepo studentRepo;
-	@Autowired
-	private IStudentCRUD1 StudentCrud;
-	
-	
+	private IStudentCRUD1 studentCrud;
+
+	public StudentController(IStudentRepo studentRepo, IStudentCRUD1 studentCrud) {
+		this.studentRepo = studentRepo;
+		this.studentCrud = studentCrud;
+	}
 
 	@GetMapping("/All")
 	public String selectAllStudents(Model model) {
 		List<Student> allStudents = (List<Student>) studentRepo.findAll();
-		model.addAttribute("AllStudents", allStudents);
+		model.addAttribute(STUDENT_ATTRIBUTE, allStudents);
 		return "Student-All";
 	}
+
 	@GetMapping("/All/{id}")
 	public String selectCourseById(@PathVariable long id, Model model) {
-	    try {
-	  
-	        model.addAttribute("AllStudents", StudentCrud.retrieveOneStudentById(id));
-	        return "Student-One"; 
-	    } catch (Exception e) {
-	        
-	        return "error-page";
-	    }
+		try {
+
+			model.addAttribute(STUDENT_ATTRIBUTE, studentCrud.retrieveOneStudentById(id));
+			return "Student-One";
+		} catch (Exception e) {
+
+			return "error-page";
+		}
 	}
-	
+
 	@GetMapping("/update/{id}")
-	public String UdateStudent(@PathVariable long id, Model model) throws Exception {
-	  
-	    Student Student = StudentCrud.retrieveOneStudentById(id);
+	public String updateStudent(@PathVariable long id, Model model) throws Exception {
 
+		Student student = studentCrud.retrieveOneStudentById(id);
 
-	    model.addAttribute("Student", Student);
+		model.addAttribute("Student", student);
 
-	    return "Student-Update";
+		return "Student-Update";
 	}
 
 	@PostMapping("/update/By/{id}")
 	public String updateStudentById(@PathVariable long id, @ModelAttribute("Student") @Valid Student updatedStudent,
-	        Model model) throws Exception {
-	    
+			Model model) throws Exception {
 
-	   
-	    Student temp = StudentCrud.retrieveOneStudentById(id);
-	    temp.setName(updatedStudent.getName());
-	    temp.setSurname(updatedStudent.getSurname());
-	    temp.setMatriculaNo(updatedStudent.getMatriculaNo());
-	    temp.setDebtCourses(updatedStudent.getDebtCourses());
-	
-	    StudentCrud.updateStudentByParams(temp);
+		Student temp = studentCrud.retrieveOneStudentById(id);
+		temp.setName(updatedStudent.getName());
+		temp.setSurname(updatedStudent.getSurname());
+		temp.setMatriculaNo(updatedStudent.getMatriculaNo());
+		temp.setDebtCourses(updatedStudent.getDebtCourses());
 
-	    return "redirect:/Student/All";
+		studentCrud.updateStudentByParams(temp);
+
+		return REDIRECT_TO_SHOW_ALL;
 
 	}
-
-
-	
-	
 
 	@PostMapping("remove/{id}")
 	public String deleteStudentById(@PathVariable("id") long id, Model model) throws Exception {
-		studentRepo.deleteById(id);
-		model.addAttribute("AllStudents", StudentCrud.selectAllStudents());
-		return "redirect:/course/showAll";
-	           
-	        
-	  
+		try {
+			studentRepo.deleteById(id);
+			model.addAttribute(STUDENT_ATTRIBUTE, studentCrud.selectAllStudents());
+			return "redirect:/course/showAll";
+		} catch (Exception e) {
+			model.addAttribute("errorMessage", "An error occurred while deleting the student");
+			return "redirect:/course/showAll";
+		}
+
 	}
 
+	@GetMapping("/AddPage")
+	public String addNewStudent(Model model) {
 
+		return "Student-Add";
+	}
 
-			@GetMapping("/AddPage")
-					public String AddNewStudent(Model model) {
-				
-					return "Student-Add";
-}
-			@PostMapping("/Add")
-			public String addNewStudent(@ModelAttribute("StudentForm") @Valid Student Student) {
-			  
-			    
-			    Student temp = new Student();
-			    temp.setName(Student.getName());
-			    temp.setSurname(Student.getSurname());
-			    temp.setMatriculaNo(Student.getMatriculaNo());
-			  temp.setPersoncode(Student.getPersoncode());
-			    
-			    studentRepo.save(temp);
-			   
+	@PostMapping("/Add")
+	public String addNewStudent2(@ModelAttribute("StudentForm") @Valid Student student) {
 
-			    return "redirect:/Student/All";
-			}
-		
+		Student temp = new Student();
+		temp.setName(student.getName());
+		temp.setSurname(student.getSurname());
+		temp.setMatriculaNo(student.getMatriculaNo());
+		temp.setPersoncode(student.getPersoncode());
+
+		studentRepo.save(temp);
+
+		return REDIRECT_TO_SHOW_ALL;
+	}
 
 }

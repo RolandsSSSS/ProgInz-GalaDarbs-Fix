@@ -50,7 +50,7 @@ public class PersonsController {
 	}
 
 	@GetMapping("/update/{id}")
-	public String UpdatePerson(@PathVariable long id, Model model) throws Exception {
+	public String updatePerson(@PathVariable long id, Model model) throws Exception {
 
 		Person person = personCrud.retrieveOnePersonById(id);
 
