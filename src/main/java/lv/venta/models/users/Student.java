@@ -12,7 +12,6 @@ import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
-import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
@@ -30,13 +29,10 @@ import lv.venta.models.Thesis;
 @AttributeOverride(name = "Idp", column = @Column(name = "Idp"))
 public class Student extends Person{
 	
-	//TODO izveidot Data JPA anotācijas
-	//TODO izveidot validāciju anotācijas
-	//TODO izveidot sasaisti ar Course klasi ManyToMany
 	@Column(name = "matriculaNo")
 	@NotNull
 	//@Size(min = 8, max = 20)
-	@Pattern(regexp = "[0-9]{8,20}")
+	@Pattern(regexp = "\\d{8,20}")
 	private String matriculaNo;
 	
 	@Column(name = "FinancialDebt")
@@ -55,10 +51,10 @@ public class Student extends Person{
 	
 	
 	public Student(
-			@NotNull @Pattern(regexp = "[A-ZĒŪĪĻĶŠĀŽČŅ]{1}[a-zēūīļķšāžčņ\\ ]+", message = "Pirmajam burtam jābūt lielajam") @Size(min = 3, max = 15) String name,
-			@NotNull @Size(min = 3, max = 15) @Pattern(regexp = "[A-ZĒŪĪĻĶŠĀŽČŅ]{1}[a-zēūīļķšāžčņ\\ ]+", message = "Pirmajam burtam jābūt lielajam") String surname,
-			@NotNull @Size(min = 12, max = 12) @Pattern(regexp = "[0-9]{6}-[0-9]{5}", message = "Neatbilstošs personas kods") String personcode,
-			User user, @NotNull @Pattern(regexp = "[0-9]{8,20}") String matriculaNo, boolean financialDebt) {
+			@NotNull @Pattern(regexp = "[A-ZĒŪĪĻĶŠĀŽČŅ][a-zēūīļķšāžčņ\\ ]+", message = "Pirmajam burtam jābūt lielajam") @Size(min = 3, max = 15) String name,
+			@NotNull @Size(min = 3, max = 15) @Pattern(regexp = "[A-ZĒŪĪĻĶŠĀŽČŅ][a-zēūīļķšāžčņ\\ ]+", message = "Pirmajam burtam jābūt lielajam") String surname,
+			@NotNull @Size(min = 12, max = 12) @Pattern(regexp = "\\d{6}-\\d{5}", message = "Neatbilstošs personas kods") String personcode,
+			User user, @NotNull @Pattern(regexp = "\\d{8,20}") String matriculaNo, boolean financialDebt) {
 		super(name, surname, personcode, user);
 		this.matriculaNo = matriculaNo;
 		this.financialDebt = financialDebt;
