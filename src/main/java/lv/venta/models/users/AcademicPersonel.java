@@ -17,7 +17,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lv.venta.models.Comment;
-import lv.venta.models.Course;
 import lv.venta.models.Thesis;
 
 @Table(name = "academic_table")
@@ -44,9 +43,9 @@ public class AcademicPersonel extends Person {
 	}
 
 	public AcademicPersonel(
-			@NotNull @Pattern(regexp = "[A-ZĒŪĪĻĶŠĀŽČŅ]{1}[a-zēūīļķšāžčņ\\ ]+", message = "Pirmajam burtam jābūt lielajam") @Size(min = 3, max = 15) String name,
-			@NotNull @Size(min = 3, max = 15) @Pattern(regexp = "[A-ZĒŪĪĻĶŠĀŽČŅ]{1}[a-zēūīļķšāžčņ\\ ]+", message = "Pirmajam burtam jābūt lielajam") String surname,
-			@NotNull @Size(min = 12, max = 12) @Pattern(regexp = "[0-9]{6}-[0-9]{5}", message = "Neatbilstošs personas kods") String personcode,
+			@NotNull @Pattern(regexp = "[A-ZĒŪĪĻĶŠĀŽČŅ][a-zēūīļķšāžčņ\\ ]+", message = "Pirmajam burtam jābūt lielajam") @Size(min = 3, max = 15) String name,
+			@NotNull @Size(min = 3, max = 15) @Pattern(regexp = "[A-ZĒŪĪĻĶŠĀŽČŅ][a-zēūīļķšāžčņ\\ ]+", message = "Pirmajam burtam jābūt lielajam") String surname,
+			@NotNull @Size(min = 12, max = 12) @Pattern(regexp = "\\d{6}-\\d{5}", message = "Neatbilstošs personas kods") String personcode,
 			User user, Degree degree) {
 		super(name, surname, personcode, user);
 		this.degree = degree;
@@ -54,10 +53,10 @@ public class AcademicPersonel extends Person {
 	@OneToMany(mappedBy = "personel", cascade = CascadeType.REMOVE)
 	private Collection<Comment> comments;
 
-	public void remove(AcademicPersonel academicPersonel) {
-	    if (thesis != null) {
-	        for (Thesis thesis : thesis) {
-	            thesis.setSupervisor(null);
+	public void remove() {
+	    if (this.thesis != null) {
+	        for (Thesis academicThesis : this.thesis) {
+	        	academicThesis.setSupervisor(null);
 	        }
 	    }
 	}
