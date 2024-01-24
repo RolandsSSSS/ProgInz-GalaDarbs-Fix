@@ -2,6 +2,8 @@ package lv.venta;
 
 import java.io.IOException;
 
+import java.util.logging.Logger;
+import java.util.logging.Level;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -26,6 +28,7 @@ import lv.venta.models.users.Person;
 
 @SpringBootApplication
 public class ProgInzGalaDarbsFixApplication {
+	Logger logger = Logger.getLogger(getClass().getName());
 
 	public static void main(String[] args) {
 		SpringApplication.run(ProgInzGalaDarbsFixApplication.class, args);
@@ -120,13 +123,10 @@ public class ProgInzGalaDarbsFixApplication {
 				
 				try{
 					String translatedText = Translate.translate(langFrom, langTo, textToTranslate);
-					System.out.println("Tulkojums: " + translatedText);
+					logger.info("Tulkojums: " + translatedText);
 				}catch (IOException e){
-					System.err.println("Kļūda veicot tulkojumu: " + e.getMessage());
+					logger.log(Level.SEVERE, "Kļūda veicot tulkojumu, " + e);
 				}
-
-				
-			
 			}
 		};
 	}
