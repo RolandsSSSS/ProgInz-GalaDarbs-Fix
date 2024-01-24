@@ -13,7 +13,7 @@ public class Translate {
 	}
 
 	public static String translate(String langFrom, String langTo, String text) throws IOException {
-		String apiKey = "AIzaSyAF7ut6hghZgvfhTOojMutfeCubKWXI6E8";
+		String apiKey = System.getenv("GOOGLE_API_KEY");
 
 		String urlStr = "https://translation.googleapis.com/language/translate/v2?key=" + apiKey + "&q="
 				+ URLEncoder.encode(text, "UTF-8") + "&target=" + langTo + "&source=" + langFrom;
