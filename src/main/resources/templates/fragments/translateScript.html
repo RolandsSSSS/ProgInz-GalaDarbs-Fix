@@ -1,0 +1,53 @@
+<div th:fragment="translate">
+	<script>
+		document.addEventListener("DOMContentLoaded", function () {
+			var translateToEnglishButton = document.getElementById("translateToEnglishButton");
+			translateToEnglishButton.addEventListener("click", function () {
+				translatePage("lv", "en");
+			});
+			var translateToLatvianButton = document.getElementById("translateToLatvianButton");
+			translateToLatvianButton.addEventListener("click", function () {
+				translatePage("en", "lv");
+			});
+		});
+
+		function translatePage(langFrom, langTo) {
+			var translatedContent = document.getElementById("translatedContent");
+
+			var elementsToTranslate = document.querySelectorAll("[data-translation]");
+
+			elementsToTranslate.forEach(function (element) {
+				var textToTranslate = element.getAttribute("data-translation");
+				translate(langFrom, langTo, textToTranslate)
+					.then(function (translatedText) {
+						element.innerText = translatedText;
+					})
+					.catch(function (error) {
+						console.error("Kļūda tulkojot: " + error);
+					});
+			});
+		}
+
+		function translate(langFrom, langTo, text) {
+			return new Promise(function (resolve, reject) {
+				var apiURL = "https://translation.googleapis.com/language/translate/v2?key=AIzaSyAF7ut6hghZgvfhTOojMutfeCubKWXI6E8";
+				var data = new FormData();
+				data.append("q", text);
+				data.append("source", langFrom);
+				data.append("target", langTo);
+
+				fetch(apiURL, {
+					method: 'POST',
+					body: data,
+				})
+					.then(response => response.json())
+					.then(data => {
+						resolve(data.data.translations[0].translatedText);
+					})
+					.catch(error => {
+						reject("HTTP pieprasījuma kļūda");
+					});
+			});
+		}
+	</script>
+</div>

@@ -9,7 +9,7 @@ import java.net.URLEncoder;
 
 public class Translate {
 	public static String translate(String langFrom, String langTo, String text) throws IOException {
-		String apiKey = "AIzaSyCvFy88NvIP-FXR22tlEpR_C8iXrfKANmo";
+		String apiKey = "AIzaSyAF7ut6hghZgvfhTOojMutfeCubKWXI6E8";
 
 		String urlStr = "https://translation.googleapis.com/language/translate/v2?key=" + apiKey + "&q="
 				+ URLEncoder.encode(text, "UTF-8") + "&target=" + langTo + "&source=" + langFrom;
