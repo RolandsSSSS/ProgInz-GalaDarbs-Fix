@@ -124,7 +124,7 @@ public class Thesis {
 		this.student = student;
 		this.supervisor = supervisor;
 		this.submitDateTime = LocalDateTime.now();
-		this.accStatus = AcceptanceStatus.submited;
+		this.accStatus = AcceptanceStatus.SUBMITTED;
 	}
 	
 	
