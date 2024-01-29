@@ -13,5 +13,5 @@ public interface IUserCRUDService {
 
 	void updateUserById(long idc, User updatedUser);
 
-	void insertNewUser(User User);
+	void insertNewUser(User user);
 }
