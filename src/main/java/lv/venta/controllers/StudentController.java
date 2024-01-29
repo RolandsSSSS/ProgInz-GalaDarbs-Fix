@@ -24,6 +24,7 @@ public class StudentController {
 	private static final String REDIRECT_TO_SHOW_ALL = "redirect:/Student/All";
 	private static final String REDIRECT_TO_SHOW_ALL_COURSE = "redirect:/course/showAll";
 	private static final String ERROR_MESSAGE_KEY = "errorMessage";
+	private static final String ERROR_PAGE = "error-page";
 
 	private IStudentRepo studentRepo;
 	private IStudentCRUD1 studentCrud;
@@ -48,7 +49,7 @@ public class StudentController {
 			return "Student-One";
 		} catch (Exception e) {
 
-			return "error-page";
+			return "ERROR_PAGE";
 		}
 	}
 
@@ -86,13 +87,13 @@ public class StudentController {
 			return REDIRECT_TO_SHOW_ALL_COURSE;
 		} catch (EmptyResultDataAccessException e) {
 			model.addAttribute(ERROR_MESSAGE_KEY, "Student with ID " + id + " not found");
-			return REDIRECT_TO_SHOW_ALL_COURSE;
+			return ERROR_PAGE;
 		} catch (DataAccessException e) {
 			model.addAttribute(ERROR_MESSAGE_KEY, "An error occurred while deleting the student");
-			return REDIRECT_TO_SHOW_ALL_COURSE;
+			return ERROR_PAGE;
 		} catch (Exception e) {
 			model.addAttribute(ERROR_MESSAGE_KEY, "An unexpected error occurred");
-			return REDIRECT_TO_SHOW_ALL_COURSE;
+			return ERROR_PAGE;
 		}
 	}
 

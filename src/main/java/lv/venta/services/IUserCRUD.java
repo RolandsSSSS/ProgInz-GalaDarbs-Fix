@@ -74,16 +74,16 @@ public class IUserCRUD implements IUserCRUDService{
 	
 
 	@Override
-	public void insertNewUser(User User) {
+	public void insertNewUser(User user) {
 		for(User User1 : selectAllUsers()) {
-			if(User1.getEmail().equals(User.getEmail()) && User1.getPassword() == (User.getPassword())) {
+			if(User1.getEmail().equals(user.getEmail()) && User1.getPassword() == (user.getPassword())) {
 				return;
 			}
 		}
-		selectAllUsers().add(User);
-		userRepo.save(User);
+		selectAllUsers().add(user);
+		userRepo.save(user);
 		
-		systemLogger.logInfo("Ievietots jauns lietotājs: " + User.getEmail());
+		systemLogger.logInfo("Ievietots jauns lietotājs: " + user.getEmail());
 	}
 		
 	}

@@ -41,7 +41,7 @@ public class Student extends Person {
 	@ManyToMany
 	@JoinTable(name = "student_debt_courses_table", joinColumns = @JoinColumn(name = "Ids"), inverseJoinColumns = @JoinColumn(name = "Idc"))
 
-	private Collection<Course> debtCourses = new ArrayList<Course>();
+	private Collection<Course> debtCourses = new ArrayList<>();
 
 	@OneToMany(mappedBy = "student", cascade = CascadeType.ALL, orphanRemoval = true)
 	private Collection<Thesis> thesis;

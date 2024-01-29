@@ -1,4 +1,5 @@
 package lv.venta.controllers;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -8,7 +9,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import jakarta.validation.Valid;
 import lv.venta.models.users.User;
-import lv.venta.repos.users.IUserRepo;
 import lv.venta.services.IUserCRUD;
 
 @Controller
@@ -16,14 +16,12 @@ import lv.venta.services.IUserCRUD;
 public class UserController {
 	public static final String USER_ATTRIBUTE = "MyUsers";
 	private static final String REDIRECT_TO_SHOW_ALL = "redirect:/User/showAll";
-	
+
 	private IUserCRUD userCRUD;
-	private IUserRepo userRepo;
-	
-	public UserController(IUserCRUD userCRUD, IUserRepo userRepo) {
-        this.userCRUD = userCRUD;
-        this.userRepo = userRepo;
-    }
+
+	public UserController(IUserCRUD userCRUD) {
+		this.userCRUD = userCRUD;
+	}
 
 	@GetMapping("/showAll")
 	public String selectAllUsers(org.springframework.ui.Model user) {
@@ -57,17 +55,18 @@ public class UserController {
 	}
 
 	@PostMapping("/update/{id}")
-	public String updateUserById(@PathVariable long id, @Valid User updatedUser, BindingResult bindingResult, org.springframework.ui.Model user) {
-		 if (bindingResult.hasErrors()) {
-			 user.addAttribute("updatedUser", updatedUser);
-			 return "User-UpdatePage";
-		 }
-		
+	public String updateUserById(@PathVariable long id, @Valid User updatedUser, BindingResult bindingResult,
+			org.springframework.ui.Model user) {
+		if (bindingResult.hasErrors()) {
+			user.addAttribute("updatedUser", updatedUser);
+			return "User-UpdatePage";
+		}
+
 		userCRUD.updateUserById(id, updatedUser);
 		user.addAttribute(USER_ATTRIBUTE, userCRUD.selectAllUsers());
 		return REDIRECT_TO_SHOW_ALL;
 	}
-	
+
 	@GetMapping("/addNew")
 	public String showAddUserForm(User user) {
 		return "User-add-page";
@@ -78,11 +77,9 @@ public class UserController {
 		if (bindingResult.hasErrors()) {
 			return "User-add-page";
 		}
-		User newUser = new User( user.getPassword(), user.getEmail());
+		User newUser = new User(user.getPassword(), user.getEmail());
 		userCRUD.insertNewUser(newUser);
 
 		return REDIRECT_TO_SHOW_ALL;
 	}
 }
-
-

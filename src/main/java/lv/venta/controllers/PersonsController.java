@@ -14,6 +14,10 @@ import java.util.logging.Level;
 
 import jakarta.validation.Valid;
 import lv.venta.services.IPersonCRUD;
+import lv.venta.services.exceptions.DeletePersonException;
+import lv.venta.services.exceptions.PersonDeletionException;
+import lv.venta.services.exceptions.PersonNotFoundException;
+import lv.venta.services.exceptions.WrongIdException;
 import lv.venta.models.users.AcademicPersonel;
 import lv.venta.models.users.Person;
 import lv.venta.repos.IPersonRepo;
@@ -24,6 +28,7 @@ public class PersonsController {
 	Logger logger = Logger.getLogger(getClass().getName());
 	public static final String PERSON_ATTRIBUTE = "AllPersons";
 	private static final String REDIRECT_TO_SHOW_ALL = "redirect:/Person/All";
+	private static final String ERROR_PAGE = "error-page";
 
 	private IPersonRepo personRepo;
 	private IPersonCRUD personCrud;
@@ -48,18 +53,20 @@ public class PersonsController {
 			return "Persons-One";
 		} catch (Exception e) {
 
-			return "error-page";
+			return ERROR_PAGE;
 		}
 	}
 
 	@GetMapping("/update/{id}")
-	public String updatePerson(@PathVariable long id, Model model) throws Exception {
+	public String updatePerson(@PathVariable long id, Model model) {
 
-		Person person = personCrud.retrieveOnePersonById(id);
-
-		model.addAttribute("person", person);
-
-		return "Person-Update";
+		try {
+			Person person = personCrud.retrieveOnePersonById(id);
+			model.addAttribute("person", person);
+			return "Person-Update";
+		} catch (PersonNotFoundException | lv.venta.services.exceptions.WrongIdException e) {
+			return ERROR_PAGE;
+		}
 	}
 
 	@PostMapping("/update/By/{id}")
@@ -79,7 +86,7 @@ public class PersonsController {
 	}
 
 	@PostMapping("remove/{id}")
-	public String deletePersonById(@PathVariable("id") long id, Model model) throws Exception {
+	public String deletePersonById(@PathVariable("id") long id, Model model) throws DeletePersonException, PersonDeletionException, WrongIdException {
 		try {
 			if (personCrud.retrieveOnePersonById(id) instanceof AcademicPersonel) {
 				return "redirect:/academicPersonel/remove/{id}";
@@ -89,9 +96,9 @@ public class PersonsController {
 				return REDIRECT_TO_SHOW_ALL;
 			}
 
-		} catch (Exception e) {
-			return "error-page";
-		}
+		} catch (PersonNotFoundException e) {
+	        throw new DeletePersonException("Kļūda dzešot personu, ", e);
+	    }
 	}
 
 	@GetMapping("/AddPage")
