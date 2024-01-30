@@ -17,7 +17,7 @@ public class ThesisCRUDService implements IThesisCRUDService {
 
 	@Autowired
 	private final SystemLogger systemLogger;
-	
+
 	@Autowired
 	private IThesisRepo thesisRepo;
 
@@ -53,7 +53,7 @@ public class ThesisCRUDService implements IThesisCRUDService {
 		Thesis thesis = selectThesisById(idt);
 		if (thesis != null) {
 			systemLogger.logInfo("Izdzēsts diplomdarbu ar ID: " + idt);
-			
+
 			for (Comment comment : thesis.getComments()) {
 				comment.setThesis(null);
 				commentRepo.deleteById(comment.getIdco());
@@ -67,7 +67,7 @@ public class ThesisCRUDService implements IThesisCRUDService {
 			thesis.getComments().clear();
 			thesisRepo.delete(thesis);
 		} else {
-	        systemLogger.logWarning("Mēģināts izdzēst neesošu diplomdarbu ar ID " + idt);
+			systemLogger.logWarning("Mēģināts izdzēst neesošu diplomdarbu ar ID " + idt);
 		}
 	}
 
@@ -81,18 +81,18 @@ public class ThesisCRUDService implements IThesisCRUDService {
 			thesis.setTasks(updatedThesis.getTasks());
 			thesis.setAccStatus(updatedThesis.getAccStatus());
 			thesisRepo.save(thesis);
-			
+
 			systemLogger.logInfo("Diplomdarbs atjaunināts ar ID: " + idt);
 		} else {
-	        systemLogger.logWarning("Mēģināts atjaunināt neesošu diplomdarbu ar ID " + idt);
+			systemLogger.logWarning("Mēģināts atjaunināt neesošu diplomdarbu ar ID " + idt);
 		}
 	}
 
 	@Override
 	public void insertNewThesis(Thesis thesis) {
 		for (Thesis thesis1 : selectAllThesis()) {
-			if (thesis1.getTitleLv().equals(thesis.getTitleLv()) && 
-					thesis1.getTitleEn().equals(thesis.getTitleEn()) && 
+			if (thesis1.getTitleLv().equals(thesis.getTitleLv()) &&
+					thesis1.getTitleEn().equals(thesis.getTitleEn()) &&
 					thesis1.getAim().equals(thesis.getAim()) &&
 					thesis1.getTasks().equals(thesis.getTasks()) &&
 					thesis1.getStudent().equals(thesis.getStudent()) &&
@@ -104,6 +104,7 @@ public class ThesisCRUDService implements IThesisCRUDService {
 		selectAllThesis().add(thesis);
 		thesisRepo.save(thesis);
 
-		systemLogger.logInfo("Ievietots jauns diplomdarbs: " + "(LV) " + thesis.getTitleLv() + " (EN) " + thesis.getTitleEn());
+		systemLogger.logInfo(
+				"Ievietots jauns diplomdarbs: " + "(LV) " + thesis.getTitleLv() + " (EN) " + thesis.getTitleEn());
 	}
 }

@@ -21,11 +21,14 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import lv.venta.services.IPersonCRUD;
+import lv.venta.services.IUserCRUD;
 import lv.venta.services.Excel.ExcelExportService;
 import lv.venta.services.Excel.ExcelUploadService;
 import lv.venta.models.users.AcademicPersonel;
 import lv.venta.models.users.Person;
+import lv.venta.models.users.User;
 import lv.venta.repos.IPersonRepo;
+import lv.venta.repos.users.IUserRepo;
 
 @Controller
 @RequestMapping("/Person")
@@ -35,15 +38,20 @@ public class PersonsController {
 
 	private IPersonRepo personRepo;
 	private IPersonCRUD personCrud;
+	private IUserRepo userRepo;
+	private IUserCRUD userService;
 
-	public PersonsController(IPersonRepo personRepo, IPersonCRUD personCrud) {
+	public PersonsController(IPersonRepo personRepo, IPersonCRUD personCrud, IUserRepo userRepo,
+			IUserCRUD userService) {
 		this.personRepo = personRepo;
 		this.personCrud = personCrud;
+		this.userRepo = userRepo;
+		this.userService = userService;
 	}
 
 	@GetMapping("/All")
 	public String selectAllPersons(Model model) {
-		List<Person> allPersons = (List<Person>) personRepo.findAll();
+		List<Person> allPersons = personCrud.selectAllPersons();
 		model.addAttribute(PERSON_ATTRIBUTE, allPersons);
 		return "Persons-All";
 	}
@@ -104,23 +112,29 @@ public class PersonsController {
 
 	@GetMapping("/AddPage")
 	public String addNewPerson(Model model) {
-
+		List<User> users = userService.selectAllUsers();
+		model.addAttribute("users", users);
 		return "Person-Add";
 	}
 
-	@PostMapping("/Add")
-	public String addNewPerson2(@ModelAttribute("personForm") @Valid Person person, BindingResult bindingResult) {
+	@PostMapping("/AddPage")
+	public String addNewPerson2(@ModelAttribute("personForm") @Valid Person person, BindingResult bindingResult,
+			HttpServletRequest request) {
 		if (bindingResult.hasErrors()) {
 			return "Person-Add";
 		}
+
+		long userId = Long.parseLong(request.getParameter("user"));
+		User user = userService.selectUserById(userId);
 
 		Person temp = new Person();
 		temp.setName(person.getName());
 		temp.setSurname(person.getSurname());
 		temp.setPersoncode(person.getPersoncode());
+		temp.setUser(user);
 
 		try {
-			personCrud.insertPersontByParams(person);
+			personCrud.insertPersontByParams(temp);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
