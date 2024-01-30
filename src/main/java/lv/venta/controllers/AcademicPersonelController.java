@@ -1,11 +1,5 @@
 package lv.venta.controllers;
 
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.util.List;
-
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -13,14 +7,9 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import jakarta.servlet.ServletException;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import lv.venta.models.users.AcademicPersonel;
-import lv.venta.models.users.Person;
 import lv.venta.services.AcademicPersonelCRUDService;
-import lv.venta.services.Excel.ExcelExportService;
 
 @Controller
 @RequestMapping("/academicPersonel")

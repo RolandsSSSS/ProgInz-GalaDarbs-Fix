@@ -4,8 +4,6 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import lv.venta.models.Comment;
-import lv.venta.models.Course;
 import lv.venta.models.Thesis;
 import lv.venta.models.users.AcademicPersonel;
 import lv.venta.repos.ICommentRepo;
@@ -18,7 +16,7 @@ public class AcademicPersonelCRUDService implements IAcademicPersonelCRUDService
 
 	@Autowired
 	private final SystemLogger systemLogger;
-	
+
 	@Autowired
 	private IAcademicPersonelRepo academicPersonelRepo;
 
@@ -57,43 +55,44 @@ public class AcademicPersonelCRUDService implements IAcademicPersonelCRUDService
 		AcademicPersonel academicPersonel = selectAcademicPersonelById(idp);
 		if (academicPersonel != null) {
 			systemLogger.logInfo("Izdzēsts akadēmiskais personāls ar ID: " + idp);
-			for(Thesis thesis : academicPersonel.getThesis()) {
+			for (Thesis thesis : academicPersonel.getThesis()) {
 				thesis.getSupervisor().remove();
 			}
 			academicPersonel.getThesis().clear();
 			academicPersonelRepo.delete(academicPersonel);
 		} else {
-	        systemLogger.logWarning("Mēģināts izdzēst neesošu akadēmisko personālu ar ID " + idp);
-	    }
+			systemLogger.logWarning("Mēģināts izdzēst neesošu akadēmisko personālu ar ID " + idp);
+		}
 	}
 
 	@Override
 	public void updateAcademicPersonelById(long idp, AcademicPersonel updatedAcademicPersonel) {
-		 AcademicPersonel academicPersonel = selectAcademicPersonelById(idp);
-		    if (academicPersonel != null) {
-		        academicPersonel.setName(updatedAcademicPersonel.getName());
-		        academicPersonel.setSurname(updatedAcademicPersonel.getSurname());
-		        academicPersonel.setPersoncode(updatedAcademicPersonel.getPersoncode());
-		        academicPersonel.setDegree(updatedAcademicPersonel.getDegree());
-		        academicPersonelRepo.save(academicPersonel);
-		        
-		        systemLogger.logInfo("Akadēmiskais personāls atjaunināts ar ID: " + idp);
-		    } else {
-		        systemLogger.logWarning("Mēģināts atjaunināt neesošu akadēmisko personālu ar ID " + idp);
-			}
+		AcademicPersonel academicPersonel = selectAcademicPersonelById(idp);
+		if (academicPersonel != null) {
+			academicPersonel.setName(updatedAcademicPersonel.getName());
+			academicPersonel.setSurname(updatedAcademicPersonel.getSurname());
+			academicPersonel.setPersoncode(updatedAcademicPersonel.getPersoncode());
+			academicPersonel.setDegree(updatedAcademicPersonel.getDegree());
+			academicPersonelRepo.save(academicPersonel);
+
+			systemLogger.logInfo("Akadēmiskais personāls atjaunināts ar ID: " + idp);
+		} else {
+			systemLogger.logWarning("Mēģināts atjaunināt neesošu akadēmisko personālu ar ID " + idp);
+		}
 	}
 
 	@Override
 	public void insertNewAcademicPersonel(AcademicPersonel academicPersonel) {
-		 for (AcademicPersonel academicPersonel1 : selectAllAcademicPersonels()) {
-		        if (academicPersonel1.getName().equals(academicPersonel.getName()) && 
-		        	academicPersonel1.getSurname().equals(academicPersonel.getSurname()) &&
-		        	academicPersonel1.getPersoncode().equals(academicPersonel.getPersoncode())) {
-		            return;
-		        }
-		    }
-		 	selectAllAcademicPersonels().add(academicPersonel);
-		    academicPersonelRepo.save(academicPersonel);
-		    systemLogger.logInfo("Ievietots jauns akadēmiskais personāls: " + academicPersonel.getName() + " " + academicPersonel.getSurname());
+		for (AcademicPersonel academicPersonel1 : selectAllAcademicPersonels()) {
+			if (academicPersonel1.getName().equals(academicPersonel.getName()) &&
+					academicPersonel1.getSurname().equals(academicPersonel.getSurname()) &&
+					academicPersonel1.getPersoncode().equals(academicPersonel.getPersoncode())) {
+				return;
+			}
+		}
+		selectAllAcademicPersonels().add(academicPersonel);
+		academicPersonelRepo.save(academicPersonel);
+		systemLogger.logInfo("Ievietots jauns akadēmiskais personāls: " + academicPersonel.getName() + " "
+				+ academicPersonel.getSurname());
 	}
 }

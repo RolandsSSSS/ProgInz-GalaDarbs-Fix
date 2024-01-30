@@ -18,7 +18,6 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import lv.venta.models.Thesis;
-import lv.venta.models.users.Person;
 import lv.venta.services.ThesisCRUDService;
 import lv.venta.services.Excel.ExcelExportService;
 
