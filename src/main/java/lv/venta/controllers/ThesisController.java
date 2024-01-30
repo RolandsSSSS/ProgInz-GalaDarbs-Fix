@@ -1,5 +1,11 @@
 package lv.venta.controllers;
 
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.util.List;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -7,9 +13,14 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import jakarta.servlet.ServletException;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import lv.venta.models.Thesis;
+import lv.venta.models.users.Person;
 import lv.venta.services.ThesisCRUDService;
+import lv.venta.services.Excel.ExcelExportService;
 
 @Controller
 @RequestMapping("/thesis")
@@ -18,10 +29,10 @@ public class ThesisController {
 	private static final String REDIRECT_TO_SHOW_ALL = "redirect:/thesis/showAll";
 
 	private ThesisCRUDService thesisService;
-	
+
 	public ThesisController(ThesisCRUDService thesisService) {
-        this.thesisService = thesisService;
-    }
+		this.thesisService = thesisService;
+	}
 
 	@GetMapping("/showAll")
 	public String selectAllThesis(org.springframework.ui.Model thesis) {
@@ -82,5 +93,32 @@ public class ThesisController {
 		thesisService.insertNewThesis(newThesis);
 
 		return REDIRECT_TO_SHOW_ALL;
+	}
+
+	@GetMapping("/Export")
+	protected void thesisExport(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
+
+		List<Thesis> allThesis = (List<Thesis>) thesisService.selectAllThesis();
+
+		String filePath = "Thesis.xlsx";
+		ExcelExportService<Thesis> excelExportService = new ExcelExportService<>();
+		excelExportService.exportToExcel(allThesis, filePath);
+
+		response.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
+		response.setHeader("Content-Disposition", "attachment; filename=Thesis.xlsx");
+
+		InputStream fileStream = new FileInputStream(filePath);
+
+		OutputStream out = response.getOutputStream();
+		byte[] buffer = new byte[4096];
+		int length;
+		while ((length = fileStream.read(buffer)) > 0) {
+			out.write(buffer, 0, length);
+		}
+
+		out.flush();
+		out.close();
+		fileStream.close();
 	}
 }

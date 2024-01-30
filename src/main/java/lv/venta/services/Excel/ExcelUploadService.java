@@ -21,23 +21,22 @@ public class ExcelUploadService {
 
         try {
             XSSFWorkbook workbook = new XSSFWorkbook(inputStream);
-            XSSFSheet sheet = workbook.getSheet("person");
+            XSSFSheet sheet = workbook.getSheet("data");
 
-            // Assuming column indexes for name, surname, and personcode are 0, 1, and 2
-            // respectively
-            int nameColumnIndex = 0;
-            int surnameColumnIndex = 1;
-            int personcodeColumnIndex = 2;
+            int nameColumnIndex = 1;
+            int surnameColumnIndex = 2;
+            int personcodeColumnIndex = 3;
 
             int lastRowIndex = sheet.getLastRowNum();
 
-            for (int i = 1; i <= lastRowIndex; i++) { // Start from 1 to skip the header row
+            for (int i = 1; i <= lastRowIndex; i++) {
                 String name = sheet.getRow(i).getCell(nameColumnIndex).getStringCellValue();
+
                 String surname = sheet.getRow(i).getCell(surnameColumnIndex).getStringCellValue();
                 String personcode = sheet.getRow(i).getCell(personcodeColumnIndex).getStringCellValue();
 
-                Person person = new Person(name, surname, personcode, null); // Replace 'null' with the appropriate User
-                                                                             // object
+                Person person = new Person(name, surname, personcode, null);
+
                 persons.add(person);
             }
 

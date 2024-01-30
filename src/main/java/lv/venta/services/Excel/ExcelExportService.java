@@ -2,6 +2,7 @@ package lv.venta.services.Excel;
 
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.lang.reflect.Field;
 import java.util.List;
 
 import org.apache.poi.ss.usermodel.Cell;
@@ -9,38 +10,43 @@ import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
-import lv.venta.models.users.Person;
+public class ExcelExportService<T> {
+    public void exportToExcel(List<T> data, String filePath) {
 
-public class ExcelExportService {
-    public static void exportPersonsToExcel(List<Person> persons, String filePath) {
-        // Create a new workbook
         XSSFWorkbook workbook = new XSSFWorkbook();
 
-        // Create a new sheet
-        XSSFSheet sheet = workbook.createSheet("person");
+        XSSFSheet sheet = workbook.createSheet("data");
 
-        // Create the header row
+        Class<?> modelClass = data.get(0).getClass();
+
+        Field[] fields = modelClass.getDeclaredFields();
+
         Row headerRow = sheet.createRow(0);
-        headerRow.createCell(0).setCellValue("Name");
-        headerRow.createCell(1).setCellValue("Surname");
-        headerRow.createCell(2).setCellValue("Personcode");
-
-        // Create the data rows
-        int rowIndex = 1;
-        for (Person person : persons) {
-            Row dataRow = sheet.createRow(rowIndex++);
-            dataRow.createCell(0).setCellValue(person.getName());
-            dataRow.createCell(1).setCellValue(person.getSurname());
-            dataRow.createCell(2).setCellValue(person.getPersoncode());
+        for (int i = 0; i < fields.length; i++) {
+            headerRow.createCell(i).setCellValue(fields[i].getName());
         }
 
-        // Write the workbook to a file
+        int rowIndex = 1;
+        for (T item : data) {
+            Row dataRow = sheet.createRow(rowIndex++);
+            for (int i = 0; i < fields.length; i++) {
+                Field field = fields[i];
+                field.setAccessible(true);
+                try {
+                    Object value = field.get(item);
+                    dataRow.createCell(i).setCellValue(value != null ? value.toString() : "");
+                } catch (IllegalAccessException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+
         try (FileOutputStream fos = new FileOutputStream(filePath)) {
             workbook.write(fos);
         } catch (IOException e) {
             e.printStackTrace();
         } finally {
-            // Close the workbook
+
             try {
                 workbook.close();
             } catch (IOException e) {
@@ -48,4 +54,5 @@ public class ExcelExportService {
             }
         }
     }
+
 }

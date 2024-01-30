@@ -1,5 +1,11 @@
 package lv.venta.controllers;
 
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.util.List;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -7,9 +13,14 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import jakarta.servlet.ServletException;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import lv.venta.models.Course;
+import lv.venta.models.users.Course;
 import lv.venta.services.CourseCRUDService;
+import lv.venta.services.Excel.ExcelExportService;
 
 @Controller
 @RequestMapping("/course")
@@ -18,10 +29,10 @@ public class CourseController {
 	private static final String REDIRECT_TO_SHOW_ALL = "redirect:/course/showAll";
 
 	private CourseCRUDService courseService;
-	
+
 	public CourseController(CourseCRUDService courseService) {
-        this.courseService = courseService;
-    }
+		this.courseService = courseService;
+	}
 
 	@GetMapping("/showAll")
 	public String selectAllCourses(org.springframework.ui.Model course) {
@@ -55,17 +66,18 @@ public class CourseController {
 	}
 
 	@PostMapping("/update/{id}")
-	public String updateCourseById(@PathVariable long id, @Valid Course updatedCourse, BindingResult bindingResult, org.springframework.ui.Model course) {
-		 if (bindingResult.hasErrors()) {
-			 course.addAttribute("updatedCourse", updatedCourse);
-			 return "course-update-page";
-		 }
-		
+	public String updateCourseById(@PathVariable long id, @Valid Course updatedCourse, BindingResult bindingResult,
+			org.springframework.ui.Model course) {
+		if (bindingResult.hasErrors()) {
+			course.addAttribute("updatedCourse", updatedCourse);
+			return "course-update-page";
+		}
+
 		courseService.updateCourseById(id, updatedCourse);
 		course.addAttribute(COURSE_ATTRIBUTE, courseService.selectAllCourses());
 		return REDIRECT_TO_SHOW_ALL;
 	}
-	
+
 	@GetMapping("/addNew")
 	public String showAddCourseForm(Course course) {
 		return "course-add-page";
@@ -80,6 +92,33 @@ public class CourseController {
 		courseService.insertNewCourse(newCourse);
 
 		return REDIRECT_TO_SHOW_ALL;
+	}
+
+	@GetMapping("/Export")
+	protected void ExportCourses(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
+
+		List<Course> allCourses = (List<Course>) courseService.selectAllCourses();
+
+		String filePath = "Courses.xlsx";
+		ExcelExportService<Course> excelExportService = new ExcelExportService<>();
+		excelExportService.exportToExcel(allCourses, filePath);
+
+		response.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
+		response.setHeader("Content-Disposition", "attachment; filename=Courses.xlsx");
+
+		InputStream fileStream = new FileInputStream(filePath);
+
+		OutputStream out = response.getOutputStream();
+		byte[] buffer = new byte[4096];
+		int length;
+		while ((length = fileStream.read(buffer)) > 0) {
+			out.write(buffer, 0, length);
+		}
+
+		out.flush();
+		out.close();
+		fileStream.close();
 	}
 
 }

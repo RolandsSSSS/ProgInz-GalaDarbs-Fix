@@ -134,7 +134,7 @@ public class PersonsController {
 	}
 
 	@PostMapping("/Import")
-	public String importPersons(@ModelAttribute("file") MultipartFile file) {
+	public String importPersons(@ModelAttribute("file") MultipartFile file) throws Exception {
 		if (!ExcelUploadService.isValidExcelFile(file)) {
 			return REDIRECT_TO_SHOW_ALL;
 
@@ -142,7 +142,9 @@ public class PersonsController {
 
 		try {
 			List<Person> persons = ExcelUploadService.getPersonDataFromExcel(file.getInputStream());
-			System.out.println(persons);
+			for (Person person : persons) {
+				personCrud.insertPersontByParams(person);
+			}
 
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -152,23 +154,20 @@ public class PersonsController {
 	}
 
 	@GetMapping("/Export")
-	protected void doGet(HttpServletRequest request, HttpServletResponse response)
+	protected void ExportPersons(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		// Assuming personsList is the list of Person objects
+
 		List<Person> allPersons = (List<Person>) personRepo.findAll();
 
-		// Generate the Excel file
 		String filePath = "persons.xlsx";
-		ExcelExportService.exportPersonsToExcel(allPersons, filePath);
+		ExcelExportService<Person> excelExportService = new ExcelExportService<>();
+		excelExportService.exportToExcel(allPersons, filePath);
 
-		// Set the content type and headers for the response
 		response.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
 		response.setHeader("Content-Disposition", "attachment; filename=persons.xlsx");
 
-		// Get the file as input stream
 		InputStream fileStream = new FileInputStream(filePath);
 
-		// Copy the file's input stream to the response's output stream
 		OutputStream out = response.getOutputStream();
 		byte[] buffer = new byte[4096];
 		int length;
@@ -176,10 +175,8 @@ public class PersonsController {
 			out.write(buffer, 0, length);
 		}
 
-		// Close streams
 		out.flush();
 		out.close();
 		fileStream.close();
 	}
-
 }

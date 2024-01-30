@@ -65,6 +65,13 @@
 			</tbody>
 		</table>
 	</div>
+	<div class="mb-3">
+			<a th:href="@{/thesis/Export}" class="btn btn-primary" data-translation="Export">Export</a>
+			<form th:action="@{/thesis/Import}" method="post" enctype="multipart/form-data">
+				<input type="file" name="file" class="form-control-file">
+				<button type="submit" class="btn btn-primary" data-translation="Import">Import</button>
+			</form>
+		</div>
 
 	<div th:replace="fragments/footer :: footer"></div>
 
