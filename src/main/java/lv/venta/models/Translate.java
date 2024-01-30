@@ -8,7 +8,7 @@ import java.net.URL;
 import java.net.URLEncoder;
 
 public class Translate {
-	private Translate() {
+	Translate() {
 		throw new IllegalStateException("Utility class");
 	}
 
