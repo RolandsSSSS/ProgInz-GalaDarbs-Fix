@@ -64,4 +64,16 @@
 	        body.classList.add('dark-mode');
 	    }
 	</script>
+	
+	<script>
+		function updateCurrentTime() {
+			var currentTimeElement = document.getElementById('currentTime');
+			var now = new Date();
+			currentTimeElement.innerText = now.toLocaleTimeString();
+		}
+
+		setInterval(updateCurrentTime, 1000);
+
+		updateCurrentTime();
+	</script>
 </div>
